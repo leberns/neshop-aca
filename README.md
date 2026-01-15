@@ -10,8 +10,8 @@ The demo application is an online e-commerce shop: NeShop, but it could be your 
 - **Deployment fully automated** with GitHub Actions: frontend, backend, database
 - Resources provisioned with **infrastructure as code**: **Bicep**
 - **No passwords needed**: the application uses managed identities to access the database
-- Database: PostgreSQL
-- Database migrations with **efbundle** from container
+- Database: **Azure Database for PostgreSQL flexible server**
+- Database migrations with **efbundle** from container app job
 - Backend: ASP.NET Core WebAPI
 - Frontend: Web/BlazorServer
 - [Azure Container Apps](https://learn.microsoft.com/en-us/dotnet/core/containers/overview?tabs=linux) (= ACA)
