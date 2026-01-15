@@ -11,7 +11,7 @@ How to deploy from your GitHub repository to your Azure account.
 
 ## Prepare your GitHub repository
 
-It is assumed your `neshop-aca` repository is in `~/Dev/neshop-aca` folder on Linux / MacOS. On Windows just replace `~/Dev` by a path like `D:\Dev\neshop-aca` in the scripts.
+It is assumed your `neshop-aca` repository is in `~/Dev/neshop-aca` folder on Linux / MacOS. On Windows just replace `~/Dev` by a path like `D:\Dev`.
 
 Clone / download the repository to a local `temp/` folder of yours:
 
@@ -25,7 +25,7 @@ Make sure to push what is in `~/Dev/neshop-aca` to your repository on GitHub.
 
 ## Configure the identity on Azure for the deployments
 
-The GitHub Actions need an identity on Azure so that it can deploy create or update resources on Azure (databases, container apps, etc).
+The GitHub Actions need an identity on Azure so that it can create or update resources on Azure (databases, container apps, etc).
 
 The identity is authorized at subscription level, so that it can create resource groups and also assign roles to the managed identities.
 
@@ -96,7 +96,7 @@ These Entra ID accounts and admin users have to be set in GitHub as secrets, so 
 
 neshop-aca repo > Settings > Secrets and variables > Actions > New repository secrets
 
-- `POSTGRESQL_ENTRA_ADMIN_NAME`: <azure-account-email> - ex.: my-account-email@outlook.com on Entra ID
+- `POSTGRESQL_ENTRA_ADMIN_NAME`: azure-account-email - ex.: my-account-email@outlook.com on Entra ID
 
   Command to find the logged-in Azure account user:
 
@@ -104,7 +104,7 @@ neshop-aca repo > Settings > Secrets and variables > Actions > New repository se
   az account show --query user.name -o tsv
   ```
 
-- `POSTGRESQL_ENTRA_ADMIN_OBJECT_ID`: <guid> - the user object id on Entra ID
+- `POSTGRESQL_ENTRA_ADMIN_OBJECT_ID`: guid - the user object id on Entra ID
 
   Command to find the user object id:
 
@@ -114,7 +114,7 @@ neshop-aca repo > Settings > Secrets and variables > Actions > New repository se
 
 - `POSTGRESQL_ADMIN_LOGIN`: posadmin - some classic admin user to be created on the database server, used by the migrations
 
-- `POSTGRESQL_ADMIN_PASSWORD`: pospa$$w0RD - password for the classic admin user, choose a complex password not this one!
+- `POSTGRESQL_ADMIN_PASSWORD`: pospa$$w0RD - password for the classic admin user, choose a complex password, not this one!
 
 ### Where a DB admin user and password are required?
 
@@ -138,8 +138,9 @@ Where to go to start the deployment manually? "Run workflow"
 
 When the deployment finishes the application URL is be available in the workflow summary, just open the workflow to see it.
 
-The resources should have been created, they can be checked in the [Azure Portal](https://portal.azure.com/).
+The resources should have been provisioned and can be verified in the [Azure Portal](https://portal.azure.com/).
 
 Resource group name: `dev-neshop-aca`
 
+Example of the resources provisioned:
 ![Azure resources screen-shot](./media/neshop-azure-resources.png)
