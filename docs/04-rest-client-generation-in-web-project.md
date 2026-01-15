@@ -8,7 +8,7 @@ Execute the ShopServer project, open the Swagger UI at http://localhost:5050/swa
 
 ```Sh
 # generate the client (to be done every time there is a change in openapi-v1.json)
-cd ~/Dev/neshop-aca/ShopWebl/ShopClient/
+cd ~/Dev/neshop-aca/src/ShopWebl/ShopClient/
 
 nswag run ./Configuration/nswag.json
 ```
@@ -17,7 +17,7 @@ nswag run ./Configuration/nswag.json
 
 ```Sh
 # create the client configuration file "nswag.json" (just for the first time)
-cd ~/Dev/neshop-aca/ShopWebl/ShopClient/
+cd ~/Dev/neshop-aca/src/ShopWebl/ShopClient/
 
 mkdir Configuration
 cd Configuration

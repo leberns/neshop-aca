@@ -44,6 +44,8 @@ chmod +x ./set-oidc-github-azure.sh
 ./set-oidc-github-azure.sh
 ```
 
+The script is idempotent, if it fails you can modify it and run again.
+
 The script outputs a few values, add them as secrets to the GitHub Repo, for example:
 
 ```
@@ -85,4 +87,10 @@ DOCKERHUB_USERNAME: <dockerhub_username>
 DOCKERHUB_TOKEN: <the PAT> (ex.: dckr_pat_123...)
 ```
 
-## Deploying to Azure
+## Updating the GitHub Actions workflow
+
+Review the GitHub Actions workflow: `~/Dev/neshop-aca/.github/workflows/cicd-neshop.yml`
+
+Check the AZURE_LOCATION, update it accordingly or leave it for now like it is.
+
+Please note that not all Azure resources are available on every location.

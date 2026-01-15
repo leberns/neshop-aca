@@ -2,11 +2,11 @@ targetScope = 'subscription'
 
 @minLength(1)
 @maxLength(64)
-@description('The environment and application names, ex.: dev-neshop. It is also used for the resource group naming: rg-<env-name>.')
+@description('The environment and application names, ex.: dev-neshop-aca. It is also used for the resource group naming: rg-<env-name>.')
 param environmentName string
 
 @minLength(1)
-@description('Primary location for all resources & Function App')
+@description('Primary location for all resources')
 @allowed([
   'australiaeast'
   'australiasoutheast'

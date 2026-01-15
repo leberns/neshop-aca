@@ -8,7 +8,7 @@ PostgreSQL installed and running on your machine / container engine, see `docker
 
 ```Sh
 # for the first time only: install the dotnet-ef tool
-cd ~/Dev/neshop-aca/ShopServer/
+cd ~/Dev/neshop-aca/src/ShopServer/
 
 dotnet new tool-manifest
 dotnet tool install dotnet-ef --local --version 10.0.1
@@ -19,7 +19,7 @@ cat .config/dotnet-tools.json
 
 ```Sh
 # build and create the migration
-cd ~/Dev/neshop-aca/ShopServer/
+cd ~/Dev/neshop-aca/src/ShopServer/
 
 dotnet build
 dotnet ef migrations add Initial --project Database --startup-project Host
@@ -27,7 +27,7 @@ dotnet ef migrations add Initial --project Database --startup-project Host
 
 ```Sh
 # execute the migration to create or update the database referenced in app settings
-cd ~/Dev/neshop-aca/ShopServer/
+cd ~/Dev/neshop-aca/src/ShopServer/
 
 dotnet ef database update --project Database --startup-project Host
 ```

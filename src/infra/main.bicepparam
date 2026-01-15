@@ -2,7 +2,7 @@ using './main.bicep'
 
 // note: the parameters are described in main.bicep
 
-param environmentName = readEnvironmentVariable('AZURE_ENV_NAME', 'dev-neshop')
+param environmentName = readEnvironmentVariable('AZURE_ENV_NAME', 'dev-neshop-aca')
 param location = readEnvironmentVariable('AZURE_LOCATION', 'westeurope')
 
 param dockerHubUsername = readEnvironmentVariable('DOCKERHUB_USERNAME')

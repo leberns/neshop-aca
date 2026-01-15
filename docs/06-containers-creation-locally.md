@@ -15,13 +15,13 @@ Add `Dockerfile` to the projects (reference https://github.com/azure-samples/dab
 Check if they build and images are created in the local docker.
 
 ```Sh
-cd ~/Dev/neshop-aca/ShopServer/
+cd ~/Dev/neshop-aca/src/ShopServer/
 
 docker build -t neshop/shopserver -f ./Host/Dockerfile .
 ```
 
 ```Sh
-cd ~/Dev/neshop-aca/ShopWebl/
+cd ~/Dev/neshop-aca/src/ShopWebl/
 
 docker build -t neshop/shopwebl -f ./WebFrontend/Dockerfile .
 ```
@@ -37,7 +37,7 @@ Therefore, make sure to have an `.env` file on the same folder as `docker-compos
 The application configurations are defined in the `docker-compose.yml` file, ex.: database connection strings.
 
 ```Sh
-cd ~/Dev/neshop-aca/docker/
+cd ~/Dev/neshop-aca/src/docker/
 
 docker compose up
 

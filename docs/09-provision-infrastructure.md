@@ -25,10 +25,10 @@ The parameters are defined in the `main.bicepparams` file. Verify if they are co
 The most commonly changeable parameters are read from environment variables, it makes them flexible to use in a CI/CD pipeline later.
 
 The Bicep deployment runs at a subscription level so that Bicep can create a new resource group.
-The resource group name as per the variables is `rg-dev-neshop`, but can be changed with the variable `AZURE_ENV_NAME`.
+The resource group name as per the variables is `rg-dev-neshop-aca`, but can be changed with the variable `AZURE_ENV_NAME`.
 
 ```Sh
-export AZURE_ENV_NAME='dev-neshop' # resource group name: rg-$AZURE_ENV_NAME, i.e.: rg-dev-neshop
+export AZURE_ENV_NAME='rg-dev-neshop-aca' # resource group name: rg-$AZURE_ENV_NAME, i.e.: rg-rg-dev-neshop-aca
 export AZURE_LOCATION='westeurope'
 
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
@@ -55,7 +55,7 @@ read -s POSTGRESQL_ADMIN_PASSWORD # enter a password, something more complex tha
 
 ```Sh
 # deploy the infrastructure
-cd ~/Dev/neshop-aca/infra
+cd ~/Dev/neshop-aca/src/infra
 
 az deployment sub create --name deploy-$AZURE_ENV_NAME --subscription $SUBSCRIPTION_ID --location $AZURE_LOCATION --template-file main.bicep --parameters main.bicepparam
 ```
@@ -67,5 +67,5 @@ az group list
 
 ```Sh
 # delete the resource group to avoid incurring charges (after using it)
-az group delete --name rg-dev-neshop
+az group delete --name rg-dev-neshop-aca
 ```

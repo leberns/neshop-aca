@@ -33,7 +33,7 @@ docker buildx create --name labs_builder --use
 
 ```Sh
 # build and push the image for the server
-cd ~/Dev/neshop-aca/ShopServer/
+cd ~/Dev/neshop-aca/src/ShopServer/
 
 docker buildx build \
   -t leberns/neshop:server-latest \
@@ -44,7 +44,7 @@ docker buildx build \
 
 ```Sh
 # build and push the image for the web frontend
-cd ~/Dev/neshop-aca/ShopWebl/
+cd ~/Dev/neshop-aca/src/ShopWebl/
 
 docker buildx build \
   -t leberns/neshop:webl-latest \

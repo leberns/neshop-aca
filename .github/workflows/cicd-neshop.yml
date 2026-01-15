@@ -5,12 +5,12 @@ permissions:
   contents: read
 
 on:
-  # push:
-  #   branches: ["main"]
-  #   paths:
-  #     - ".github/workflows/cicd-neshop.yml"
-  #     - "neshop/ShopServer/**"
-  #     - "neshop/ShopWebl/**"
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/cicd-neshop.yml"
+      - "src/ShopServer/**"
+      - "src/ShopWebl/**"
   workflow_dispatch: # to allow starting the workflow manually
 
 env:
@@ -43,15 +43,15 @@ jobs:
             [
               {
                 "title": "ShopServer",
-                "solution_path": "neshop/ShopServer",
-                "dockerfile_path": "neshop/ShopServer/Host",
+                "solution_path": "src/ShopServer",
+                "dockerfile_path": "src/ShopServer/Host",
                 "image_tag": "server-latest",
                 "container_app_name": "ca-neshop-server"
               },
               {
                 "name": "ShopWebl",
-                "solution_path": "neshop/ShopWebl",
-                "dockerfile_path": "neshop/ShopWebl/WebFrontend",
+                "solution_path": "src/ShopWebl",
+                "dockerfile_path": "src/ShopWebl/WebFrontend",
                 "image_tag": "webl-latest",
                 "container_app_name": "ca-neshop-webl"
               }
@@ -59,7 +59,7 @@ jobs:
           # Convert to single line and output
           echo "matrix=$(echo $SERVICES | jq -c .)" >> $GITHUB_OUTPUT
           # Add infra info
-          echo "infra_path=neshop/infra" >> $GITHUB_OUTPUT
+          echo "infra_path=src/infra" >> $GITHUB_OUTPUT
 
   build-and-push:
     name: Build & Push
