@@ -4,7 +4,7 @@
 export PGHOST=psql-wiok5xjx2aqja.postgres.database.azure.com
 export PGPORT=5432
 export PGUSER=<Azure account>
-export PGDATABASE=neshop
+export PGDATABASE=neshopdb
 
 # get access token
 export PGPASSWORD="$(az account get-access-token --resource https://ossrdbms-aad.database.windows.net --query accessToken --output tsv)"
