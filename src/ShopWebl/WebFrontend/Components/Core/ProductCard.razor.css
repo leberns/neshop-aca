@@ -1,0 +1,15 @@
+.price-currency {
+    font-size: 0.5rem;
+    vertical-align: text-top;
+}
+
+.price-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: darkorange;
+}
+
+.price-block {
+    display: block;
+    margin-bottom: 0.5rem;
+}

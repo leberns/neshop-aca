@@ -1,0 +1,29 @@
+@using ShopWeb.ShopClient
+
+<a href="/product?productId=@Product.Id" class="text-decoration-none">
+    <div class="card" style="cursor: pointer;">
+        @if (Product.ProductImages is not null && Product.ProductImages.Any())
+        {
+            <div class="d-flex justify-content-center">
+                <img src="@FirstImagePath()" class="card-img-top d-flex align-items-center justify-content-center" alt="@Product.Name image" style="width: 200px; height: 200px;">
+            </div>
+        }
+        else
+        {
+            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="width: 200px; height: 200px;">
+                <span class="text-white">No Image</span>
+            </div>
+        }
+        <div class="card-body">
+            <PriceViewer Price="@Product.Price"></PriceViewer>
+            <h5 class="card-title">@Product.Name</h5>
+        </div>
+    </div>
+</a>
+
+@code {
+    [Parameter]
+    public required ProductInfo Product { get; set; }
+
+    private string FirstImagePath() => $"assets/product-images/{Product.ProductImages.First()}.webp";
+}

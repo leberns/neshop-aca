@@ -1,0 +1,32 @@
+@using System.Globalization
+
+<price class="price-block">
+    <span class="price-currency">@_currency</span>
+    <span class="price-value">@PriceValue()</span>
+</price>
+
+@code {
+    [Parameter]
+    public required string Price { get; set; }
+
+    private readonly string _currency = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+
+    private string PriceValue()
+    {
+        if (string.IsNullOrEmpty(Price))
+        {
+            return "0.-";
+        }
+
+        var result = decimal.TryParse(Price, out var priceValue);
+
+        if (!result)
+        {
+            return "ERR.-";
+        }
+
+        var value = priceValue.ToString("N2");
+
+        return value.EndsWith("00") ? $"{value[..^2]}–" : value;
+    }
+}

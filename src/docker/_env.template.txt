@@ -1,0 +1,5 @@
+# .env example
+# Save a copy of this file as `.env` and change these values as needed, kindly generate strong passwords.
+POSTGRES_USER=posadmin
+POSTGRES_PASSWORD=pospassw0rd
+POSTGRES_DB=neshopdb

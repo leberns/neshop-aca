@@ -1,0 +1,273 @@
+name: CI/CD NeShop Containers DockerHub
+
+permissions:
+  id-token: write # required for OIDC
+  contents: read
+
+on:
+  # push:
+  #   branches: ["main"]
+  #   paths:
+  #     - ".github/workflows/cicd-neshop.yml"
+  #     - "neshop/ShopServer/**"
+  #     - "neshop/ShopWebl/**"
+  workflow_dispatch: # to allow starting the workflow manually
+
+env:
+  AZURE_LOCATION: westeurope
+  DOCKER_REPO_NAME: neshop
+  DATABASE_NAME: neshopdb
+
+jobs:
+  notify-starting:
+    name: Notify Started
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Start
+        run: |
+          echo "## Deployment Starting" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+
+  setup:
+    name: Setup Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      infra_path: ${{ steps.set-matrix.outputs.infra_path }}
+    steps:
+      # note that the paths are case-sensitive
+      - id: set-matrix
+        run: |
+          SERVICES='
+            [
+              {
+                "title": "ShopServer",
+                "solution_path": "neshop/ShopServer",
+                "dockerfile_path": "neshop/ShopServer/Host",
+                "image_tag": "server-latest",
+                "container_app_name": "ca-neshop-server"
+              },
+              {
+                "name": "ShopWebl",
+                "solution_path": "neshop/ShopWebl",
+                "dockerfile_path": "neshop/ShopWebl/WebFrontend",
+                "image_tag": "webl-latest",
+                "container_app_name": "ca-neshop-webl"
+              }
+            ]'
+          # Convert to single line and output
+          echo "matrix=$(echo $SERVICES | jq -c .)" >> $GITHUB_OUTPUT
+          # Add infra info
+          echo "infra_path=neshop/infra" >> $GITHUB_OUTPUT
+
+  build-and-push:
+    name: Build & Push
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: ${{ fromJson(needs.setup.outputs.matrix) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }} # Personal access token from https://hub.docker.com/settings/security
+
+      - name: Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_REPO_NAME }}
+          tags: |
+            type=raw,value=${{ matrix.service.image_tag }}
+          labels: |
+            org.opencontainers.image.title=${{ matrix.service.title }}
+            org.opencontainers.image.description=NeShop service ${{ matrix.service.title }}
+            org.opencontainers.image.vendor=NeShop Organization
+
+      - name: Build and push to DockerHub
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.solution_path }}
+          file: ${{ matrix.service.dockerfile_path }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+  deploy-infra:
+    name: Deploy Infra
+    needs: [setup, build-and-push]
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    outputs:
+      neshop_resource_group_name: ${{ steps.infra_info.outputs.neshop_resource_group_name }}
+      neshop_server_fqdn: ${{ steps.infra_info.outputs.neshop_server_fqdn }}
+      neshop_webl_fqdn: ${{ steps.infra_info.outputs.neshop_webl_fqdn }}
+      neshop_database_fqdn: ${{ steps.infra_info.outputs.neshop_database_fqdn }}
+      neshop_migration_job_name: ${{ steps.infra_info.outputs.neshop_migration_job_name }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy Infrastructure
+        id: deploy_bicep
+        uses: azure/bicep-deploy@v2
+        env:
+          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          POSTGRESQL_ENTRA_ADMIN_NAME: ${{ secrets.POSTGRESQL_ENTRA_ADMIN_NAME }}
+          POSTGRESQL_ENTRA_ADMIN_OBJECT_ID: ${{ secrets.POSTGRESQL_ENTRA_ADMIN_OBJECT_ID }}
+          POSTGRESQL_ADMIN_LOGIN: ${{ secrets.POSTGRESQL_ADMIN_LOGIN }}
+          POSTGRESQL_ADMIN_PASSWORD: ${{ secrets.POSTGRESQL_ADMIN_PASSWORD }}
+          POSTGRESQL_DATABASE_NAME: ${{ env.DATABASE_NAME }}
+        with:
+          type: deployment
+          operation: create
+          name: IaC-Deploy
+          scope: subscription
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          location: ${{ env.AZURE_LOCATION }}
+          template-file: ${{ needs.setup.outputs.infra_path }}/main.bicep
+          parameters-file: ${{ needs.setup.outputs.infra_path }}/main.bicepparam
+
+      - name: Parse Bicep Outputs
+        id: infra_info
+        run: |
+          # read output properties from the Bicep outputs object
+          echo "neshop_resource_group_name=${{ steps.deploy_bicep.outputs.NESHOP_RESOURCE_GROUP_NAME }}" >> $GITHUB_OUTPUT
+          echo "neshop_server_fqdn=${{ steps.deploy_bicep.outputs.NESHOP_CONTAINER_APPS_SERVER_FQDN }}" >> $GITHUB_OUTPUT
+          echo "neshop_webl_fqdn=${{ steps.deploy_bicep.outputs.NESHOP_CONTAINER_APPS_WEBL_FQDN }}" >> $GITHUB_OUTPUT
+          echo "neshop_database_fqdn=${{ steps.deploy_bicep.outputs.NESHOP_DATABASE_FQDN }}" >> $GITHUB_OUTPUT
+          echo "neshop_migration_job_name=${{ steps.deploy_bicep.outputs.NESHOP_MIGRATION_JOB_NAME }}" >> $GITHUB_OUTPUT
+
+  run-migrations:
+    name: Migrate Database
+    needs: [setup, build-and-push, deploy-infra]
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Run Database Migrations
+        run: |
+          az containerapp job start \
+            --name ${{ needs.deploy-infra.outputs.neshop_migration_job_name }} \
+            --resource-group ${{ needs.deploy-infra.outputs.neshop_resource_group_name }}
+          
+          echo "Waiting for migration job to complete..."
+          for i in {1..30}; do
+            STATUS=$(az containerapp job execution list \
+              --name ${{ needs.deploy-infra.outputs.neshop_migration_job_name }} \
+              --resource-group ${{ needs.deploy-infra.outputs.neshop_resource_group_name }} \
+              --query '[0].properties.status' -o tsv)
+          
+            if [ "$STATUS" = "Succeeded" ]; then
+              echo "Migration completed successfully, job name: ${{ needs.deploy-infra.outputs.neshop_migration_job_name }}"
+              exit 0
+            elif [ "$STATUS" = "Failed" ]; then
+              echo "Migration failed, job name: ${{ needs.deploy-infra.outputs.neshop_migration_job_name }}"
+              exit 1
+            fi
+          
+            echo "Migration status: $STATUS, waiting..."
+            sleep 10
+          done
+          
+          echo "Migration timed out"
+          exit 1
+
+  update-container-apps:
+    name: Update Containers
+    needs: [setup, build-and-push, deploy-infra, run-migrations]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: ${{ fromJson(needs.setup.outputs.matrix) }}
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Update Container App Image
+        run: |
+          IMAGE_URL="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${{ matrix.service.image_tag }}"
+          
+          echo "Updating ${{ matrix.service.container_app_name }} with image: $IMAGE_URL"
+
+          az containerapp update \
+            --name ${{ matrix.service.container_app_name }} \
+            --resource-group ${{ needs.deploy-infra.outputs.neshop_resource_group_name }} \
+            --image $IMAGE_URL \
+            --set-env-vars "DEPLOYED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" "GIT_SHA=${{ github.sha }}"
+
+      - name: Verify Deployment
+        run: |
+          echo "Waiting for new revision to be active..."
+          sleep 30
+
+          APP_FQDN=$(az containerapp show \
+            --name ${{ matrix.service.container_app_name }} \
+            --resource-group ${{ needs.deploy-infra.outputs.neshop_resource_group_name }} \
+            --query properties.configuration.ingress.fqdn \
+            --output tsv)
+          
+          # endpoint based on MapHealthChecks in Program.cs
+          HEALTH_URL=https://$APP_FQDN/health
+
+          echo "::notice::Application health endpoint at $HEALTH_URL"
+
+          # Health check
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" $HEALTH_URL || echo "000")
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 301 ] || [ "$HTTP_STATUS" -eq 302 ]; then
+            echo "✅ Health check passed (HTTP $HTTP_STATUS)"
+          else
+            echo "⚠️ Health check returned HTTP $HTTP_STATUS"
+          fi
+
+  notify-ending:
+    name: Notify Ended
+    needs: [setup, build-and-push, deploy-infra, update-container-apps]
+    runs-on: ubuntu-latest
+    if: always() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deployment Summary
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Resource Group**: ${{ needs.deploy-infra.outputs.neshop_resource_group_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Web URL**: https://${{ needs.deploy-infra.outputs.neshop_webl_fqdn }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Server URL**: https://${{ needs.deploy-infra.outputs.neshop_server_fqdn }}/health" >> $GITHUB_STEP_SUMMARY
+          echo "- **Database Server / Database Name**: ${{ needs.deploy-infra.outputs.neshop_database_fqdn }} / ${{ env.DATABASE_NAME }}" >> $GITHUB_STEP_SUMMARY

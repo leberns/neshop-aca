@@ -1,0 +1,27 @@
+@ShopServer_HostAddress = https://localhost:5051
+#@ShopServer_HostAddress = https://ca-api-wiok5xjx2aqja.purplebeach-b64ac1cd.westeurope.azurecontainerapps.io
+
+GET {{ShopServer_HostAddress}}/api/products/
+Accept: application/json
+
+###
+GET {{ShopServer_HostAddress}}/api/products/?fromPrice=100&toPrice=201
+Accept: application/json
+
+###
+GET {{ShopServer_HostAddress}}/api/products/?fromPrice=100&toPrice=200&brand=1
+Accept: application/json
+
+###
+GET {{ShopServer_HostAddress}}/health/
+Accept: application/json
+
+###
+GET {{ShopServer_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+# open in browser:
+GET {{ShopServer_HostAddress}}/swagger/index.html
+
+###

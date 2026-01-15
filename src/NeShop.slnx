@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/ShopServer/">
+    <Project Path="ShopServer/Contracts/Contracts.csproj" />
+    <Project Path="ShopServer/Database/Database.csproj" />
+    <Project Path="ShopServer/Core/Core.csproj" />
+    <Project Path="ShopServer/Host/Host.csproj" />
+  </Folder>
+  <Folder Name="/ShopWebl/">
+    <Project Path="ShopWebl/ShopClient/ShopClient.csproj" />
+    <Project Path="ShopWebl/WebContracts/WebContracts.csproj" />
+    <Project Path="ShopWebl/WebCore/WebCore.csproj" />
+    <Project Path="ShopWebl/WebFrontend/WebFrontend.csproj" />
+  </Folder>
+</Solution>

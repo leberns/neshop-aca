@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Contracts/Contracts.csproj" />
+  <Project Path="Core/Core.csproj" />
+  <Project Path="Database/Database.csproj" />
+  <Project Path="Host/Host.csproj" />
+</Solution>

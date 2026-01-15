@@ -1,0 +1,52 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:18.0
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    networks:
+      - net-lab
+    volumes:
+      - postgres:/var/lib/postgresql
+
+  shopserver:
+    container_name: shopserver
+    image: neshop/shopserver:latest # image name and version tag
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5052
+      - ConnectionStrings__ShopDatabase=Host=postgres;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    ports:
+      - "5052:5052" # host:container
+    networks:
+      - net-lab
+
+  shopwebl:
+    container_name: shopwebl
+    image: neshop/shopwebl:latest # image name and version tag
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5042
+      - ShopClient__BaseUrl=http://shopserver:5052
+    ports:
+      - "5042:5042" # host:container
+    networks:
+      - net-lab
+
+networks:
+  net-lab:
+    name: net-lab
+    external: true # this network has been created in another docker compose file
+
+volumes:
+  postgres:
+    driver: local

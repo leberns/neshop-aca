@@ -1,0 +1,56 @@
+﻿@page "/products"
+@implements IDisposable
+@using System.Globalization
+@using ShopWeb.ShopClient
+@using WebContracts
+@using WebFrontend.Components.Core
+@attribute [StreamRendering]
+@inject ILogger<Products> Logger
+@inject IProductsService ProductsService
+
+<PageTitle>Products - NeShop</PageTitle>
+
+@if (_products == null)
+{
+    <h1>Products</h1>
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h1>@(_products.Count == 1 ? "Product" : $"{_products.Count} Products")</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        @foreach (var product in _products)
+        {
+            <div class="col">
+                <ProductCard Product="product"></ProductCard>
+            </div>
+        }
+    </div>
+    <div>
+        <p>Culture: @(CultureInfo.CurrentCulture.Name), UI Culture: @(CultureInfo.CurrentUICulture.Name)</p>
+    </div>
+}
+
+@code {
+    private readonly CancellationTokenSource _cts = new();
+
+    private ICollection<ProductInfo>? _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Products page rendered with Culture: {Culture}, UI Culture: {UICulture}",
+            CultureInfo.CurrentCulture.Name,
+            CultureInfo.CurrentUICulture.Name);
+
+        Logger.LogInformation("Rendering in browser (WebAssembly)? {IsBrowser}", OperatingSystem.IsBrowser());
+
+        _products = await ProductsService.ListProducts(_cts.Token);
+    }
+
+    public void Dispose()
+    {
+        _cts.Cancel();
+        _cts.Dispose();
+    }
+}
