@@ -11,15 +11,13 @@ How to deploy from your GitHub repository to your Azure account.
 
 ## Prepare your GitHub repository
 
-Clone / download the repository to a local `temp/` folder of yours.
+It is assumed your `neshop-aca` repository is in `~/Dev/neshop-aca` folder on Linux / MacOS. On Windows just replace `~/Dev` by a path like `D:\Dev\neshop-aca` in the scripts.
+
+Clone / download the repository to a local `temp/` folder of yours:
 
 ```Sh
 git clone https://github.com/leberns/neshop-aca.git
 ```
-
-It is assumed your repository will in `~/Dev/neshop-aca` folder on Linux / MacOS.
-
-On Windows just replace `~/Dev` by a path like `D:\Dev\neshop-aca` in the scripts.
 
 Copy the content to your local repository folder at `~/Dev/neshop-aca`.
 
