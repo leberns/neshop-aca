@@ -11,16 +11,17 @@ How to deploy from your GitHub repository to your Azure account.
 
 ## Prepare your GitHub repository
 
-Clone / download the repository and copy the content to your repository "neshop-aca" on GitHub.
-
-It is assumed your repository will be under an `~/Dev` folder on Linux / MacOS.
-
-On Windows just replace `~/Dev` by a path like `D:\Dev` in the scripts.
+Clone / download the repository to a local `temp/` folder of yours.
 
 ```Sh
-# get the code with "git clone" and copy to your repository at ~/Dev
 git clone https://github.com/leberns/neshop-aca.git
 ```
+
+It is assumed your repository will in `~/Dev/neshop-aca` folder on Linux / MacOS.
+
+On Windows just replace `~/Dev` by a path like `D:\Dev\neshop-aca` in the scripts.
+
+Copy the content to your local repository folder at `~/Dev/neshop-aca`.
 
 Make sure to push what is in `~/Dev/neshop-aca` to your repository on GitHub.
 
@@ -55,15 +56,15 @@ AZURE_TENANT_ID        = <guid>
 AZURE_SUBSCRIPTION_ID  = <guid>
 ```
 
-Do not copy/paste the values with spaces.
+Mind the spaces, avoid them during copy/paste of these values.
 
-With this done, the GitHub Actions can now deploy from your neshop-aca repository, main branch, on your Azure subscription.
+With this done, the GitHub Actions can now deploy from **your** `neshop-aca` repository, `main` branch, on your Azure subscription.
 
 ## Prepare access to the container images on Docker Hub
 
 So that the container images on Docker Hub can be updated and used in deployment workflows from GitHub Actions.
 
-Make sure to have:
+Make sure to haveat hands:
 
 - your Docker Hub `<dockerhub_username>`
 - your GitHub `<github_username>` and repository `<github_repository>`.
@@ -80,7 +81,7 @@ Prepare a personal access token (PAT) in Docker Hub with **Read/Write** access:
 
 In the GitHub repository, set the secrets:
 
-<the repo> > Settings > Secrets and variables > Actions > New repository secrets
+neshop-aca repo > Settings > Secrets and variables > Actions > New repository secrets
 
 ```
 DOCKERHUB_USERNAME: <dockerhub_username>
@@ -91,13 +92,11 @@ DOCKERHUB_TOKEN: <the PAT> (ex.: dckr_pat_123...)
 
 The application uses **managed identities** to access the database, so the application do not have access to any fixed passwords.
 
-The developer / db administrator uses the Azure Entra ID account, also they do not have access to any fixed passwords.
+The developer / db administrator can access the database through the Azure Entra ID accounts, also no need for fixed passwords.
 
-The only situation that neededs an database administrator and password is to execute the migration jobs from a container, at the moment.
+These Entra ID accounts and admin users have to be set in GitHub as secrets, so that they can be provisioned in the database, otherwise no person can access it, just the application.
 
-These Entra ID accounts and admin users have to be set in GitHub as secrets, so that they can be provisioned in the database, otherwise no person can access it.
-
-<the repo> > Settings > Secrets and variables > Actions > New repository secrets
+neshop-aca repo > Settings > Secrets and variables > Actions > New repository secrets
 
 - `POSTGRESQL_ENTRA_ADMIN_NAME`: <azure-account-email> - ex.: my-account-email@outlook.com on Entra ID
 
@@ -117,7 +116,11 @@ These Entra ID accounts and admin users have to be set in GitHub as secrets, so 
 
 - `POSTGRESQL_ADMIN_LOGIN`: posadmin - some classic admin user to be created on the database server, used by the migrations
 
-- `POSTGRESQL_ADMIN_PASSWORD`: pospa$$w0RD - password for the classic admin user, choose a complex password
+- `POSTGRESQL_ADMIN_PASSWORD`: pospa$$w0RD - password for the classic admin user, choose a complex password not this one!
+
+### Where a DB admin user and password are required?
+
+The only situation that neededs an database administrator and password is to execute Entity framework database migrations from a container, at the moment.
 
 ## Updating the GitHub Actions workflow
 
@@ -129,15 +132,15 @@ Please note that not all Azure resources are available on every location.
 
 ## Starting the deployment manually
 
-<the repo> > Actions > Secrets and variables > Actions > New repository secrets
+neshop-aca repo > Actions > Secrets and variables > Actions > New repository secrets
 
-Where to go to start the deployment manually: "Run workflow"
+Where to go to start the deployment manually? "Run workflow"
 
 ![Run workflow button screen-shot](./media/github-workflow-run.png)
 
-When the deployment finishes the URL to open the application is be available in the workflow summary, just open the workflow to see it.
+When the deployment finishes the application URL is be available in the workflow summary, just open the workflow to see it.
 
-The resources should have been created, can be checked in the [Azure Portal](https://portal.azure.com/).
+The resources should have been created, they can be checked in the [Azure Portal](https://portal.azure.com/).
 
 Resource group name: `dev-neshop-aca`
 
