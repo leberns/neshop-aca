@@ -1,6 +1,8 @@
 # Provision infrastructure from a local machine
 
-The deployment is done through Bicep, the infrastructure sources are in the `infra/` folder.
+It is possible to deploy the application on Azure from a local machine instead of the GitHub Actions workflow.
+
+The infrastructure sources are in the `infra/` folder.
 
 ## Prerequisites
 
@@ -9,7 +11,7 @@ The deployment is done through Bicep, the infrastructure sources are in the `inf
 ## Check / install bicep locally
 
 ```Sh
-ls ~/.azure/bin/bicep # see if bicep is installed
+ls ~/.azure/bin/bicep # see if bicep is installed (Linux / MacOS)
 
 az bicep install
 
@@ -20,15 +22,16 @@ az bicep version
 
 ## Verify and update deployment parameters
 
-The parameters are defined in the `main.bicepparams` file. Verify if they are correct for your environment, location, etc.
+The deployment parameters are defined in the `main.bicepparams` file. Verify if they are correct for your environment, location, etc.
 
 The most commonly changeable parameters are read from environment variables, it makes them flexible to use in a CI/CD pipeline later.
 
 The Bicep deployment runs at a subscription level so that Bicep can create a new resource group.
-The resource group name as per the variables is `rg-dev-neshop-aca`, but can be changed with the variable `AZURE_ENV_NAME`.
+
+The resource group name is `rg-dev-neshop-aca`, but can be changed with the variable `AZURE_ENV_NAME`.
 
 ```Sh
-export AZURE_ENV_NAME='rg-dev-neshop-aca' # resource group name: rg-$AZURE_ENV_NAME, i.e.: rg-rg-dev-neshop-aca
+export AZURE_ENV_NAME='dev-neshop-aca' # resource group name: rg-$AZURE_ENV_NAME, i.e.: rg-dev-neshop-aca
 export AZURE_LOCATION='westeurope'
 
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)

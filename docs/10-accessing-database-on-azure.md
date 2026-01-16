@@ -40,7 +40,8 @@ az containerapp job logs show \
    --container ca-neshop-server-migrations-container
   -g rg-dev-neshop-aca
 
-#{"TimeStamp":"2026-01-10T10:17:11.6300559+00:00","Log":"at Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsBundle.Execute(String context, Assembly assembly, Assembly startupAssembly, String[] args)"}
-#{"TimeStamp":"2026-01-10T10:17:11.6300608+00:00","Log":"password has been provided but the backend requires one (in cleartext)"}
-#{"TimeStamp":"2026-01-10T10:17:11.6562489+00:00","Log":"Migration failed with exit code 1 ==="}
+# Logs example:
+# {"TimeStamp":"2026-01-10T10:17:11.6300559+00:00","Log":"at Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsBundle.Execute(String context, Assembly assembly, Assembly startupAssembly, String[] args)"}
+# {"TimeStamp":"2026-01-10T10:17:11.6300608+00:00","Log":"password has been provided but the backend requires one (in cleartext)"}
+# {"TimeStamp":"2026-01-10T10:17:11.6562489+00:00","Log":"Migration failed with exit code 1 ==="}
 ```

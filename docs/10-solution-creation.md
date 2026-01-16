@@ -1,10 +1,10 @@
-# Solution creation
+# Making of
+
+The making of NeShop: the commands used to create the projects.
 
 ## Backend Shop Server API
 
 ```Sh
-# Backend Shop Server API
-
 cd ~/Dev/neshop-aca/src/
 
 mkdir ShopServer
@@ -58,11 +58,9 @@ cd ~/Dev/neshop-aca/src/ShopServer/Host/
 dotnet dev-certs https --trust
 ```
 
-## Frontend Shop Blazor WebAssembly
+## Frontend Shop Blazor
 
 ```Sh
-# Frontend Shop Blazor WebAssembly
-
 cd ~/Dev/neshop-aca/src/
 
 mkdir ShopWebl

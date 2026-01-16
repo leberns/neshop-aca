@@ -1,4 +1,5 @@
 #!/bin/bash
+# Windows users: run this script in WSL or Git Bash: https://git-scm.com/install/windows
 # Configure the connection between GitHub and Azure for CI/CD so that GitHub Actions workflows can deploy to Azure using OpenID Connect (OIDC).
 
 # Review these values, update accordingly:
