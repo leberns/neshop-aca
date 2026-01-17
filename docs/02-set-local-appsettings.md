@@ -26,7 +26,7 @@ history -p
 # set the connection string to Azure PostgreSQL after provisioning the infrastructure on Azure (update Host and Username!)
 cd ~/Dev/neshop-aca/src/ShopServer/Host/
 
-dotnet user-secrets set "ConnectionStrings:ShopDatabase" "Host=psql-wiok5xjx2aqja.postgres.database.azure.com;Database=neshopdb;Username=lebernsmuller@hotmail.com;Ssl Mode=Require;"
+dotnet user-secrets set "ConnectionStrings:ShopDatabase" "Host=psql-wiok5xjx2aqja.postgres.database.azure.com;Database=neshopdb;Username=your-email@outlook.com;Ssl Mode=Require;"
 ```
 
 ```Sh

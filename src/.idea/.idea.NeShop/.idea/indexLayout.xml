@@ -2,11 +2,12 @@
 <project version="4">
   <component name="UserContentModel">
     <attachedFolders>
+      <Path>../.github</Path>
+      <Path>../docs</Path>
       <Path>docker</Path>
       <Path>docs</Path>
       <Path>infra</Path>
       <Path>tools</Path>
-      <Path>../.github</Path>
     </attachedFolders>
     <explicitIncludes />
     <explicitExcludes />

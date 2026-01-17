@@ -1,4 +1,4 @@
-# Making of
+# The initial solution creation
 
 The making of NeShop: the commands used to create the projects.
 

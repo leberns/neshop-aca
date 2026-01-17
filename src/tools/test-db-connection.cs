@@ -12,14 +12,16 @@ using Npgsql;
 // get current az connection user email by executing in a console:
 // az account show --query user.name --output tsv
 
-var userEmail = "lebernsmuller@hotmail.com";
+var userEmail = "your-azure-account@outlook.com"; // paste user email here
 
 // get access token by executing in a console:
 // az account get-access-token --resource https://ossrdbms-aad.database.windows.net --query accessToken --output tsv
 
-var accessToken = "ey...";
+var accessToken = "ey..."; // paste access token here
 
-string connectionString = "Host=psql-wiok5xjx2aqja.postgres.database.azure.com" +
+var databaseHost = "psql-wiok5xjx8aqja.postgres.database.azure.com"; // update the database server as per Azure Portal
+
+string connectionString = $"Host={databaseHost}" +
                           ";Database=neshopdb" +
                           ";Port=5432" +
                           $";Username={userEmail}" +
