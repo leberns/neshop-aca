@@ -131,6 +131,17 @@ module logAnalyticsWorkspace 'br/public:avm/res/operational-insights/workspace:0
   }
 }
 
+module aiResource './app/azure-openai.bicep' = {
+  name: 'ai-resource'
+  scope: rg
+  params: {
+    name: '${abbrs.cognitiveServicesAccounts}${resourceToken}'
+    location: location
+    tags: tags
+  }
+}
+
+
 module containerAppsEnvironment 'br/public:avm/res/app/managed-environment:0.8.0' = {
   name: 'container-apps-env'
   scope: rg
@@ -191,7 +202,7 @@ module containerAppsServerApp 'app/container-apps.bicep' = {
         name: 'database-connection-string'
         value: 'Host=${postgresServer.outputs.fqdn};Port=5432;Database=${postgresDatabaseName};Username=${managedIdentity.outputs.name};SSL Mode=Require;Trust Server Certificate=true;'
       }
-    ]    
+    ]
     environmentVariables: [
       {
         name: 'ConnectionStrings__ShopDatabase'
@@ -200,6 +211,10 @@ module containerAppsServerApp 'app/container-apps.bicep' = {
       {
         name: 'ManagedIdentityOptions__ManagedIdentityClientId'
         value: managedIdentity.outputs.clientId
+      }
+      {
+        name: 'AiOptions__Endpoint'
+        value: aiResource.outputs.endpoint
       }
       {
         name: 'ASPNETCORE_HTTP_PORTS'

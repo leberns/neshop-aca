@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
+    <ProjectReference Include="..\AiClient\AiClient.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

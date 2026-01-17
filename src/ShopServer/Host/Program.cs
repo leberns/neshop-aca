@@ -2,11 +2,13 @@ using Azure.Identity;
 using Contracts;
 using Contracts.Options;
 using Contracts.Services;
-using Core;
 using Database;
 using Database.DataSeed;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using AiClient.Services;
+using Core.ReadProduct;
+using Core.SemanticSearchProduct;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,10 +28,17 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseNpgsql(postgresDataSource);
 });
 
+builder.Services.AddOptions<AiOptions>()
+    .BindConfiguration(nameof(AiOptions))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 builder.Services
     .AddSeeders()
     .AddScoped<ShopRepository>()
-    .AddScoped<IProductsReader, ProductsReader>();
+    .AddScoped<IEmbedder, AzureOpenAiEmbedder>()
+    .AddScoped<IProductsReader, ProductsReader>()
+    .AddScoped<IProductRagService, ProductRagService>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();

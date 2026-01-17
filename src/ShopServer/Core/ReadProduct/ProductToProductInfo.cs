@@ -2,7 +2,7 @@ using System.Globalization;
 using Contracts.ApiModels;
 using Contracts.DataModels;
 
-namespace Core.ApiMappers;
+namespace Core.ReadProduct;
 
 public static class ProductToProductInfo
 {

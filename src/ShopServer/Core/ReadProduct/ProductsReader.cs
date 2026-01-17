@@ -1,10 +1,9 @@
 using Contracts.ApiModels;
 using Contracts.ApiModels.Filters;
 using Contracts.Services;
-using Core.ApiMappers;
 using Database;
 
-namespace Core;
+namespace Core.ReadProduct;
 
 public class ProductsReader(
     ShopRepository repository
