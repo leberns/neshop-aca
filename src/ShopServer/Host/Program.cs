@@ -1,3 +1,4 @@
+using Azure.AI.OpenAI;
 using Azure.Identity;
 using Contracts;
 using Contracts.Options;
@@ -8,12 +9,43 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using AiClient.Services;
 using Core.ReadProduct;
-using Core.SemanticSearchProduct;
+using Core.ShopSearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
 using var loggerFactory = LoggerFactory.Create(loggerBuilder => loggerBuilder.AddConsole());
 var logger = loggerFactory.CreateLogger(nameof(Program));
+
+builder.Services.AddOptions<AiOptions>()
+    .BindConfiguration(nameof(AiOptions))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+builder.Services.AddSingleton(_ =>
+{
+    var aiOptions = builder.Configuration.GetSection(nameof(AiOptions)).Get<AiOptions>()
+        ?? throw new InvalidOperationException($"{nameof(AiOptions)} are missing from configuration.");
+
+    var managedIdentityOptions = builder.Configuration.GetSection(nameof(ManagedIdentityOptions)).Get<ManagedIdentityOptions>()
+        ?? throw new InvalidOperationException($"{nameof(ManagedIdentityOptions)} are missing from configuration.");
+
+    if (!string.IsNullOrWhiteSpace(aiOptions.ApiKey))
+    {
+        logger.LogInformation("Using API key to connect to AI provider");
+        return new AzureOpenAIClient(
+            new Uri(aiOptions.Endpoint),
+            new System.ClientModel.ApiKeyCredential(aiOptions.ApiKey));
+    }
+
+    logger.LogInformation("Using managed identity to connect to AI provider");
+    var credential = new DefaultAzureCredential(
+        new DefaultAzureCredentialOptions
+        {
+            ManagedIdentityClientId = managedIdentityOptions.ManagedIdentityClientId
+        });
+
+    return new AzureOpenAIClient(new Uri(aiOptions.Endpoint), credential);
+});
 
 var postgresDataSource = ConfigurePostgresDataSource(builder, logger);
 
@@ -28,17 +60,14 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseNpgsql(postgresDataSource);
 });
 
-builder.Services.AddOptions<AiOptions>()
-    .BindConfiguration(nameof(AiOptions))
-    .ValidateDataAnnotations()
-    .ValidateOnStart();
-
 builder.Services
     .AddSeeders()
     .AddScoped<ShopRepository>()
+    .AddScoped<ShopProductSearch>()
     .AddScoped<IEmbedder, AzureOpenAiEmbedder>()
     .AddScoped<IProductsReader, ProductsReader>()
-    .AddScoped<IProductRagService, ProductRagService>();
+    .AddScoped<IProductRagService, ProductRagService>()
+    .AddScoped<IProductsSearchService, ProductsSearchService>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();

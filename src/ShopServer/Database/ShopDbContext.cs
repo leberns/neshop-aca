@@ -1,6 +1,9 @@
+using Contracts;
+using Pgvector;
 using Contracts.DataModels;
 using Database.DataSeed;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Database;
 
@@ -44,7 +47,11 @@ public sealed class ShopDbContext(
         modelBuilder.Entity<ProductEmbedding>(builder =>
         {
             builder.Property(e => e.Vector)
-                .HasColumnType("vector(1536)"); // dimension for text-embedding-3-small
+                .HasColumnType(Constants.Ai.DbType)
+                .HasConversion(
+                    v => new Vector(v),
+                    v => v.ToArray()
+                );
         });
 
         foreach (var seeder in seeders)

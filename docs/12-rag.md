@@ -19,3 +19,12 @@
 ## References
 
 PostgreSQL vector extension in .NET, see the Entity Framework Core section: https://github.com/pgvector/pgvector-dotnet
+
+.NET AI implementations: https://github.com/azure-Samples/eshoplite
+
+## Azure OpenAI manual configuration
+
+- Azure Portal > Create a resource > Azure OpenAI > Create (ex.: ai-openai-labs999)
+- an MS Foundry resource is created with the Azure OpenAI, look for it at https://ai.azure.com/
+- get endpoint in MS Foundry: https://ai-openai-labs999.openai.azure.com/
+- create the 
