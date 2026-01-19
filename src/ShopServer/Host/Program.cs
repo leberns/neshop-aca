@@ -10,6 +10,11 @@ using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddApplicationInsights();
+
 using var loggerFactory = LoggerFactory.Create(loggerBuilder => loggerBuilder.AddConsole());
 var logger = loggerFactory.CreateLogger(nameof(Program));
 

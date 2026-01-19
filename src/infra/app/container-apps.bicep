@@ -5,13 +5,17 @@ param name string
 param location string = resourceGroup().location
 param tags object = {}
 
-@description('User assigned managed identity client id, the app uses this identity to access other resources')
-param identityClientId string = ''
-@description('User assigned managed identity resource id')
-param identityResourceId string = ''
-
 @description('Container app environment resource id')
 param environmentResourceId string = ''
+
+@secure()
+@description('Application Insights (monitoring) connection string')
+param applicationInsightsConnectionString string
+
+@description('User assigned managed identity client id, the app uses this identity to access other resources')
+param identityClientId string
+@description('User assigned managed identity resource id')
+param identityResourceId string = ''
 
 @description('Container image')
 param imageApp string
@@ -48,6 +52,17 @@ var identityVariables = !empty(identityClientId) ? [
     secretRef: 'user-assigned-managed-identity-client-id'
   }
 ] : []
+
+var monitoringSettings = [
+  {
+    name: 'APPLICATIONINSIGHTS_AUTHENTICATION_STRING'
+    value: 'ClientId=${identityClientId};Authorization=AAD'
+  }
+  {
+    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    value: applicationInsightsConnectionString
+  }
+]
 
 module containerAppsApp 'br/public:avm/res/app/container-app:0.19.0' = {
   name: 'container-apps-${name}'
@@ -109,7 +124,7 @@ module containerAppsApp 'br/public:avm/res/app/container-app:0.19.0' = {
           cpu: json('0.25') // cpu is int, the json parsing is to avoid the type warning for the fraction
           memory: '0.5Gi'
         }
-        env: union(environmentVariables, identityVariables)
+        env: union(environmentVariables, identityVariables, monitoringSettings)
       }
     ]
   }

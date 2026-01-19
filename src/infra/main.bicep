@@ -92,7 +92,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
 
 // User assigned managed identity to be used by the app to reach other resources like database
 module managedIdentity 'br/public:avm/res/managed-identity/user-assigned-identity:0.4.3' = {
-  name: 'userAssignedIdentity'
+  name: 'user-assigned-identity'
   scope: rg
   params: {
     location: location
@@ -121,13 +121,25 @@ module postgresServer 'app/postgresql.bicep' = {
   }
 }
 
-module logAnalyticsWorkspace 'br/public:avm/res/operational-insights/workspace:0.14.2' = {
-  name: 'log-analytics-workspace'
+module logAnalytics 'br/public:avm/res/operational-insights/workspace:0.14.2' = {
+  name: 'log-analytics'
   scope: rg
   params: {
     name: '${abbrs.operationalInsightsWorkspaces}${resourceToken}'
     location: location
     tags: tags
+  }
+}
+
+module monitoring 'br/public:avm/res/insights/component:0.7.1' = {
+  name: '${uniqueString(deployment().name, location)}-monitoring'
+  scope: rg
+  params: {
+    name: '${abbrs.insightsComponents}${resourceToken}'
+    location: location
+    tags: tags
+    workspaceResourceId: logAnalytics.outputs.resourceId
+    disableLocalAuth: true
   }
 }
 
@@ -138,7 +150,7 @@ module containerAppsEnvironment 'br/public:avm/res/app/managed-environment:0.8.0
     name: '${abbrs.appManagedEnvironments}${resourceToken}'
     location: location
     tags: tags
-    logAnalyticsWorkspaceResourceId: logAnalyticsWorkspace.outputs.resourceId
+    logAnalyticsWorkspaceResourceId: logAnalytics.outputs.resourceId
     zoneRedundant: false
   }
 }
@@ -176,12 +188,13 @@ module migrationJob './app/migration-job.bicep' = {
 
 module containerAppsServerApp 'app/container-apps.bicep' = {
   name: 'container-apps-server'
-  scope: rg  
+  scope: rg
   params: {
     name: nameServer
     imageApp: imageServer
     tags: tags
     environmentResourceId: containerAppsEnvironment.outputs.resourceId
+    applicationInsightsConnectionString: monitoring.outputs.connectionString
     identityClientId: managedIdentity.outputs.clientId
     identityResourceId: managedIdentity.outputs.resourceId
     dockerHubUsername: dockerHubUsername
@@ -191,7 +204,7 @@ module containerAppsServerApp 'app/container-apps.bicep' = {
         name: 'database-connection-string'
         value: 'Host=${postgresServer.outputs.fqdn};Port=5432;Database=${postgresDatabaseName};Username=${managedIdentity.outputs.name};SSL Mode=Require;Trust Server Certificate=true;'
       }
-    ]    
+    ]
     environmentVariables: [
       {
         name: 'ConnectionStrings__ShopDatabase'
@@ -211,12 +224,14 @@ module containerAppsServerApp 'app/container-apps.bicep' = {
 
 module containerAppsWebApp 'app/container-apps.bicep' = {
   name: 'container-apps-web'
-  scope: rg  
+  scope: rg
   params: {
     name: nameWeb
     imageApp: imageWeb
     tags: tags
     environmentResourceId: containerAppsEnvironment.outputs.resourceId
+    applicationInsightsConnectionString: monitoring.outputs.connectionString
+    identityClientId: managedIdentity.outputs.clientId
     dockerHubUsername: dockerHubUsername
     dockerHubToken: dockerHubToken
     secrets: [
@@ -235,6 +250,16 @@ module containerAppsWebApp 'app/container-apps.bicep' = {
         value: '80;8080'
       }
     ]
+  }
+}
+
+module rbac 'app/rbac.bicep' = {
+  name: 'rbac-assignments'
+  scope: rg
+  params: {
+    appInsightsName: monitoring.outputs.name
+    managedIdentityPrincipalId: managedIdentity.outputs.principalId
+    userIdentityPrincipalId: postgresEntraAdministratorObjectId
   }
 }
 
