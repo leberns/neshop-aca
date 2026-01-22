@@ -1,6 +1,6 @@
+using Contracts.Cart.Entities;
+using Contracts.Cart.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
-using Contracts.DataModels;
-using Contracts.DataModels.Enums;
 
 namespace Database.DataSeed;
 
