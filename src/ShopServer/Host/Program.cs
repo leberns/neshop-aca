@@ -1,4 +1,5 @@
 using Azure.Identity;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Contracts;
 using Contracts.Options;
 using Contracts.Products.Services;
@@ -8,13 +9,44 @@ using Database.DataSeed;
 using Host.Api;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddApplicationInsights();
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(ConfigureResource)
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation();
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation();
+    })
+    .UseAzureMonitor(o =>
+    {
+        // note: set the environment variable APPLICATIONINSIGHTS_CONNECTION_STRING with the connection string to the Application Insights resource
+
+        var managedIdentityOptions = builder.Configuration.GetSection(nameof(ManagedIdentityOptions)).Get<ManagedIdentityOptions>();
+        if(string.IsNullOrWhiteSpace(managedIdentityOptions?.ManagedIdentityClientId))
+        {
+            o.Credential = new DefaultAzureCredential(); // for development use the default credential
+        }
+        else
+        {
+            o.Credential = new DefaultAzureCredential(
+                new DefaultAzureCredentialOptions
+                {
+                    ManagedIdentityClientId = managedIdentityOptions.ManagedIdentityClientId
+                });
+        }
+    });
 
 using var loggerFactory = LoggerFactory.Create(loggerBuilder => loggerBuilder.AddConsole());
 var logger = loggerFactory.CreateLogger(nameof(Program));
@@ -112,4 +144,11 @@ static NpgsqlDataSource? ConfigurePostgresDataSource(
             logger.LogInformation("No connection string was provided to access the database");
             return null;
     }
+}
+
+void ConfigureResource(ResourceBuilder r)
+{
+    r.AddService(Constants.Metadata.AppName,
+        serviceVersion: Constants.Metadata.AppVersion,
+        serviceInstanceId: Environment.MachineName);
 }
