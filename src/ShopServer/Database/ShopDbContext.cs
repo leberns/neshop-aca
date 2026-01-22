@@ -1,4 +1,11 @@
-using Contracts.DataModels;
+using Contracts.Brand.Entities;
+using Contracts.Cart.Entities;
+using Contracts.Category.Entities;
+using Contracts.Customer.Entities;
+using Contracts.Images.Entities;
+using Contracts.ProductCart.Entity;
+using Contracts.Products.Entities;
+using Contracts.Review.Entities;
 using Database.DataSeed;
 using Microsoft.EntityFrameworkCore;
 

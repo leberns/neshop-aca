@@ -1,10 +1,11 @@
 using Azure.Identity;
 using Contracts;
 using Contracts.Options;
-using Contracts.Services;
-using Core;
+using Contracts.Products.Services;
+using Core.Products;
 using Database;
 using Database.DataSeed;
+using Host.Api;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -33,10 +34,10 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
 
 builder.Services
     .AddSeeders()
-    .AddScoped<ShopRepository>()
+    .AddScoped<ProductsRepository>()
     .AddScoped<IProductsReader, ProductsReader>();
 
-builder.Services.AddControllers();
+builder.Services.AddAuthorization();
 builder.Services.AddOpenApi();
 builder.Services.AddHealthChecks();
 
@@ -56,7 +57,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapProductEndpoints();
 
 app.MapHealthChecks("/health");
 
