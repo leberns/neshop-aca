@@ -1,4 +1,7 @@
+using Contracts.Categories.Entities;
+using Contracts.Brands.Entities;
 using Contracts.Images.Entities;
+using Contracts.ProductsCart.Entity;
 
 namespace Contracts.Products.Entities;
 
@@ -16,13 +19,13 @@ public record Product
 
     public int BrandId { get; set; }
 
-    public Brand.Entities.Brand Brand { get; set; } = null!;
+    public Brand Brand { get; set; } = null!;
 
     public int CategoryId { get; set; } = 0;
 
-    public Category.Entities.Category Category { get; set; } = null!;
+    public Category Category { get; set; } = null!;
 
     public ICollection<Image> Images { get; } = [];
 
-    public ICollection<ProductCart.Entity.ProductCart> ProductCarts { get; set; } = [];
+    public ICollection<ProductCart> ProductCarts { get; set; } = [];
 }

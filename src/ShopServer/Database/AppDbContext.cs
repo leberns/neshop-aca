@@ -1,11 +1,11 @@
-using Contracts.Brand.Entities;
-using Contracts.Cart.Entities;
-using Contracts.Category.Entities;
-using Contracts.Customer.Entities;
+using Contracts.Brands.Entities;
+using Contracts.Carts.Entities;
+using Contracts.Categories.Entities;
+using Contracts.Customers.Entities;
 using Contracts.Images.Entities;
-using Contracts.ProductCart.Entity;
 using Contracts.Products.Entities;
-using Contracts.Review.Entities;
+using Contracts.ProductsCart.Entity;
+using Contracts.Reviews.Entities;
 using Database.DataSeed;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +18,7 @@ public sealed class AppDbContext(
 {
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Brand> Brands { get; set; }
+    public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Image> Images { get; set; }
     public DbSet<Cart> Carts { get; set; }

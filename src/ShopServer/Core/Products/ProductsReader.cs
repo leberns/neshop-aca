@@ -1,14 +1,14 @@
 using Contracts.Products.ApiModels;
 using Contracts.Products.Filters;
+using Contracts.Products.Repositories;
 using Contracts.Products.Services;
-using Database;
 using Microsoft.Extensions.Logging;
 
 namespace Core.Products;
 
 public partial class ProductsReader(
     ILogger<ProductsReader> logger,
-    ProductsRepository repository
+    IProductRepository repository
     ) : IProductsReader
 {
     public async Task<List<ProductInfo>> GetProducts(

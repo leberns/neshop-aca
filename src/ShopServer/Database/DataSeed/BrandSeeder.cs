@@ -1,4 +1,4 @@
-using Contracts.Brand.Entities;
+using Contracts.Brands.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database.DataSeed;
