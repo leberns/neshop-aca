@@ -1,6 +1,6 @@
-using Contracts.DataModels;
+using Contracts.Products.Entities;
 
-namespace Contracts.Services;
+namespace Contracts.ProductsAiSearch.Services;
 
 public interface IProductRagService
 {

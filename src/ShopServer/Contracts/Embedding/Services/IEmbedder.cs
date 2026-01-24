@@ -1,4 +1,4 @@
-namespace Contracts.Services;
+namespace Contracts.Embedding.Services;
 
 public interface IEmbedder
 {

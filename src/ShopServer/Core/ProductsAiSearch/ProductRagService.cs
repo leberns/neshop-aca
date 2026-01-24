@@ -1,18 +1,20 @@
 using Contracts;
-using Contracts.DataModels;
-using Contracts.Services;
-using Database;
+using Contracts.Embedding.Services;
+using Contracts.Products.Entities;
+using Contracts.ProductsAiSearch.Entity;
+using Contracts.ProductsAiSearch.Repositories;
+using Contracts.ProductsAiSearch.Services;
 
-namespace Core.ShopSearch;
+namespace Core.ProductsAiSearch;
 
 public class ProductRagService(
     IEmbedder embedder,
-    ShopProductSearch shopProductSearch
+    IProductRepositoryAiSearch productAiSearch
     ) : IProductRagService
 {
     public async Task GenerateAndStoreEmbeddingsAsync(CancellationToken cancellationToken)
     {
-        var products = await shopProductSearch.GetSearchableProducts(cancellationToken);
+        var products = await productAiSearch.GetSearchableProducts(cancellationToken);
 
         foreach (var product in products)
         {
@@ -25,11 +27,11 @@ public class ProductRagService(
         var sourceText = $"{product.Name} {product.Description}";
         var embedding = await embedder.GenerateEmbeddingAsync(sourceText, cancellationToken);
 
-        var productEmbedding = await shopProductSearch.FindProductEmbeddingById(product.Id, cancellationToken);
+        var productEmbedding = await productAiSearch.FindProductEmbeddingById(product.Id, cancellationToken);
 
         if (productEmbedding is null)
         {
-            productEmbedding = new ProductEmbedding
+            var newProductEmbedding = new ProductEmbedding
             {
                 ProductId = product.Id,
                 SourceText = sourceText,
@@ -38,16 +40,19 @@ public class ProductRagService(
                 Model = Constants.Ai.EmbeddingModelName
             };
 
-            await shopProductSearch.AddProductEmbedding(productEmbedding, cancellationToken);
+            await productAiSearch.AddProductEmbedding(newProductEmbedding, cancellationToken);
         }
         else
         {
-            productEmbedding.SourceText = sourceText;
-            productEmbedding.Vector = embedding;
-            productEmbedding.GeneratedAtUtc = DateTime.UtcNow;
-            productEmbedding.Model = Constants.Ai.EmbeddingModelName;
+            var updatedProductEmbedding = productEmbedding with
+            {
+                SourceText = sourceText,
+                Vector = embedding,
+                GeneratedAtUtc = DateTime.UtcNow,
+                Model = Constants.Ai.EmbeddingModelName
+            };
 
-            await shopProductSearch.UpdateProductEmbedding(productEmbedding, cancellationToken);
+            await productAiSearch.UpdateProductEmbedding(updatedProductEmbedding, cancellationToken);
         }
     }
 
@@ -56,13 +61,13 @@ public class ProductRagService(
         int limit,
         CancellationToken cancellationToken)
     {
-        if (!await shopProductSearch.AnyProductEmbeddings(cancellationToken))
+        if (!await productAiSearch.AnyProductEmbeddings(cancellationToken))
         {
             await GenerateAndStoreEmbeddingsAsync(cancellationToken);
         }
 
         var queryEmbedding = await embedder.GenerateEmbeddingAsync(query, cancellationToken);
 
-        return await shopProductSearch.SearchSimilarProducts(queryEmbedding, limit, cancellationToken);
+        return await productAiSearch.SearchSimilarProducts(queryEmbedding, limit, cancellationToken);
     }
 }

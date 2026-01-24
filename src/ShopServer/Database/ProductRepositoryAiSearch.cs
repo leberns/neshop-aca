@@ -1,11 +1,15 @@
+using Contracts.Products.Entities;
+using Contracts.ProductsAiSearch.Entity;
+using Contracts.ProductsAiSearch.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Contracts.DataModels;
 using Pgvector;
 using Pgvector.EntityFrameworkCore;
 
 namespace Database;
 
-public class ShopProductSearch(ShopDbContext dbContext)
+public class ProductRepositoryAiSearch(
+    AppDbContext dbContext
+    ) : IProductRepositoryAiSearch
 {
     public async Task<List<Product>> GetSearchableProducts(CancellationToken cancellationToken)
     {
@@ -25,6 +29,7 @@ public class ShopProductSearch(ShopDbContext dbContext)
         CancellationToken cancellationToken)
     {
         var pgVector = new Vector(vector);
+
         return await dbContext.ProductEmbeddings
             .OrderBy(e => e.Vector.L2Distance(pgVector))
             .Take(limit)

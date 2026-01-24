@@ -1,16 +1,16 @@
+using Contracts;
 using Pgvector;
-using Contracts.DataModels;
 using Contracts.Brands.Entities;
 using Contracts.Carts.Entities;
 using Contracts.Categories.Entities;
 using Contracts.Customers.Entities;
 using Contracts.Images.Entities;
 using Contracts.Products.Entities;
+using Contracts.ProductsAiSearch.Entity;
 using Contracts.ProductsCart.Entity;
 using Contracts.Reviews.Entities;
 using Database.DataSeed;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Database;
 

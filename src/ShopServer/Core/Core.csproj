@@ -1,11 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\Database\Database.csproj" />
-    <ProjectReference Include="..\AiClient\AiClient.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -18,6 +12,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Products\ProductsReader.logger.cs">
+      <DependentUpon>ProductsReader.cs</DependentUpon>
+    </Compile>
+    <Compile Update="ProductsAiSearch\ProductsSearchService.logger.cs">
+      <DependentUpon>ProductsSearchService.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

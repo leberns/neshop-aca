@@ -4,7 +4,7 @@ using Npgsql;
 
 namespace Host.Extensions;
 
-public static class AppDbContextExtensions
+public static class AddAppDbContextExtensions
 {
     public static IServiceCollection AddAppDbContext(
         this IServiceCollection services,

@@ -1,11 +1,11 @@
 using Azure.AI.OpenAI;
 using Contracts;
-using Contracts.Services;
+using Contracts.Embedding.Services;
 using OpenAI.Embeddings;
 
 namespace AiClient.Services;
 
-public class AzureOpenAiEmbedder(
+public class AppAzureOpenAiEmbedder(
     AzureOpenAIClient openAiClient
     ) : IEmbedder
 {
