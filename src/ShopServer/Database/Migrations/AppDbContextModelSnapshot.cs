@@ -3,7 +3,6 @@ using System;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,12 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Database.Migrations
 {
-    [DbContext(typeof(ShopDbContext))]
-    [Migration("20260114193903_Initial")]
-    partial class Initial
+    [DbContext(typeof(AppDbContext))]
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Contracts.DataModels.Brand", b =>
+            modelBuilder.Entity("Contracts.Brand.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +56,7 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Cart", b =>
+            modelBuilder.Entity("Contracts.Cart.Entities.Cart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,7 +85,7 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Category", b =>
+            modelBuilder.Entity("Contracts.Category.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,7 +119,7 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Customer", b =>
+            modelBuilder.Entity("Contracts.Customer.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +157,7 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Image", b =>
+            modelBuilder.Entity("Contracts.Images.Entities.Image", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,7 +247,59 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Product", b =>
+            modelBuilder.Entity("Contracts.ProductCart.Entity.ProductCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("BundlePrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductCarts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BundlePrice = 315.00m,
+                            CartId = 1,
+                            ProductId = 1,
+                            Quantity = 1,
+                            UnitPrice = 315.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BundlePrice = 150.00m,
+                            CartId = 1,
+                            ProductId = 7,
+                            Quantity = 3,
+                            UnitPrice = 75.00m
+                        });
+                });
+
+            modelBuilder.Entity("Contracts.Products.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -373,59 +422,7 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.ProductCart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("BundlePrice")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductCarts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BundlePrice = 315.00m,
-                            CartId = 1,
-                            ProductId = 1,
-                            Quantity = 1,
-                            UnitPrice = 315.00m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BundlePrice = 150.00m,
-                            CartId = 1,
-                            ProductId = 7,
-                            Quantity = 3,
-                            UnitPrice = 75.00m
-                        });
-                });
-
-            modelBuilder.Entity("Contracts.DataModels.Review", b =>
+            modelBuilder.Entity("Contracts.Review.Entities.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -497,9 +494,9 @@ namespace Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Cart", b =>
+            modelBuilder.Entity("Contracts.Cart.Entities.Cart", b =>
                 {
-                    b.HasOne("Contracts.DataModels.Customer", "Customer")
+                    b.HasOne("Contracts.Customer.Entities.Customer", "Customer")
                         .WithMany("Carts")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -508,9 +505,9 @@ namespace Database.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Image", b =>
+            modelBuilder.Entity("Contracts.Images.Entities.Image", b =>
                 {
-                    b.HasOne("Contracts.DataModels.Product", "Product")
+                    b.HasOne("Contracts.Products.Entities.Product", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -519,34 +516,15 @@ namespace Database.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Product", b =>
+            modelBuilder.Entity("Contracts.ProductCart.Entity.ProductCart", b =>
                 {
-                    b.HasOne("Contracts.DataModels.Brand", "Brand")
-                        .WithMany("Products")
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Contracts.DataModels.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Brand");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Contracts.DataModels.ProductCart", b =>
-                {
-                    b.HasOne("Contracts.DataModels.Cart", "Cart")
+                    b.HasOne("Contracts.Cart.Entities.Cart", "Cart")
                         .WithMany("ProductCarts")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Contracts.DataModels.Product", "Product")
+                    b.HasOne("Contracts.Products.Entities.Product", "Product")
                         .WithMany("ProductCarts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -557,15 +535,34 @@ namespace Database.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Review", b =>
+            modelBuilder.Entity("Contracts.Products.Entities.Product", b =>
                 {
-                    b.HasOne("Contracts.DataModels.Customer", "Customer")
+                    b.HasOne("Contracts.Brand.Entities.Brand", "Brand")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Contracts.Category.Entities.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Contracts.Review.Entities.Review", b =>
+                {
+                    b.HasOne("Contracts.Customer.Entities.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Contracts.DataModels.Product", "Product")
+                    b.HasOne("Contracts.Products.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -576,27 +573,27 @@ namespace Database.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Brand", b =>
+            modelBuilder.Entity("Contracts.Brand.Entities.Brand", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Cart", b =>
+            modelBuilder.Entity("Contracts.Cart.Entities.Cart", b =>
                 {
                     b.Navigation("ProductCarts");
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Category", b =>
+            modelBuilder.Entity("Contracts.Category.Entities.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Customer", b =>
+            modelBuilder.Entity("Contracts.Customer.Entities.Customer", b =>
                 {
                     b.Navigation("Carts");
                 });
 
-            modelBuilder.Entity("Contracts.DataModels.Product", b =>
+            modelBuilder.Entity("Contracts.Products.Entities.Product", b =>
                 {
                     b.Navigation("Images");
 

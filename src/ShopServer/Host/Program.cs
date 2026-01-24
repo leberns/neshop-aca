@@ -28,8 +28,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi(); // map https://localhost:5051/openapi/v1.json
-    app.UseSwaggerUI(options => // enable https://localhost:5051/swagger
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/openapi/v1.json", "Shop API");
     });

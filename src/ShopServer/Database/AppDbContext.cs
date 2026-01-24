@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Database;
 
-public sealed class ShopDbContext(
-    DbContextOptions<ShopDbContext> options,
+public sealed class AppDbContext(
+    DbContextOptions<AppDbContext> options,
     IEnumerable<ISeeder> seeders
 ) : DbContext(options)
 {

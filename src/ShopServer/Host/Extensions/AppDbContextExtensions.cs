@@ -10,7 +10,7 @@ public static class AppDbContextExtensions
         this IServiceCollection services,
         NpgsqlDataSource? postgresDataSource = null)
     {
-        services.AddDbContext<ShopDbContext>(options =>
+        services.AddDbContext<AppDbContext>(options =>
         {
             if (postgresDataSource is null)
             {
