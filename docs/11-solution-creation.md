@@ -16,7 +16,7 @@ dotnet sln ./ShopServer.sln migrate
 
 rm ./ShopServer.sln
 
-dotnet new webapi --use-controllers -n Host --framework net10.0
+dotnet new webapi -n Host --framework net10.0
 dotnet sln add ./Host/Host.csproj
 
 dotnet new classlib -n Contracts --framework net10.0

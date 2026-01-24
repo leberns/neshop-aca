@@ -4,7 +4,7 @@ using Contracts.Products.Filters;
 
 namespace Database;
 
-public class ProductsRepository(ShopDbContext context)
+public class ProductsRepository(AppDbContext context)
 {
     public async Task<List<Product>> GetProductsByFilter(
         ProductsFilter filter,

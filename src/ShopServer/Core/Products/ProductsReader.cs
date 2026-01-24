@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Core.Products;
 
-public class ProductsReader(
+public partial class ProductsReader(
     ILogger<ProductsReader> logger,
     ProductsRepository repository
     ) : IProductsReader
@@ -17,14 +17,14 @@ public class ProductsReader(
     {
         var products = await repository.GetProductsByFilter(filter, cancellationToken);
 
-        logger.LogInformation("GetProducts: Retrieved {ProductsCount} products", products.Count);
+        LogProductsRetrieved(logger, nameof(GetProducts), products.Count);
 
         return products.Select(p => p.ToProductInfo()).ToList();
     }
 
     public async Task<ProductInfo> GetProductById(int productId, CancellationToken cancellationToken)
     {
-        logger.LogInformation("GetProductById {ProductId}", productId);
+        LogGetProductById(logger, nameof(GetProductById), productId);
 
         return (await repository.GetProductById(productId, cancellationToken)).ToProductInfo();
     }
