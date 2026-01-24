@@ -14,7 +14,7 @@ The demo application is an online e-commerce shop: NeShop, but it could be your 
 - Database migrations with **efbundle** from container app job
 - Backend: ASP.NET Core WebAPI
 - Frontend: Web/BlazorServer
-- [Azure Container Apps](https://learn.microsoft.com/en-us/dotnet/core/containers/overview?tabs=linux) (= ACA)
+- Azure Container Apps (= aca)
 - Container registry: DockerHub
 - Images and test content created with AI
 
@@ -31,3 +31,4 @@ GitHub Actions workflow deploying to Azure, an execution example:
 Pick an interest and follow along.
 
 - [Getting Started - Deploying to Azure](./docs/01-getting-started-deploying-to-azure.md)
+- [Static Assets - How images were generated with AI](./docs/05-static-assets-generation.md)
