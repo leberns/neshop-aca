@@ -43,11 +43,26 @@ dotnet add Database package Microsoft.EntityFrameworkCore.Design --version 10.0.
 # add Postgres
 dotnet add Database package Npgsql.EntityFrameworkCore.PostgreSQL --version 10.0.0
 
+# add core tests
+dotnet new xunit -o Core.Tests
+dotnet sln add Core.Tests
+dotnet add Core.Tests reference Core
+dotnet add Core.Tests reference Contracts
+dotnet add Core.Tests package Moq --version 4.20.72
+
+# add database tests
+dotnet new xunit -o Database.Tests
+dotnet sln add Database.Tests
+dotnet add Database.Tests reference Database
+dotnet add Database.Tests reference Contracts
+dotnet add Database.Tests package Moq --version 4.20.72
+dotnet add Database.Tests package Microsoft.EntityFrameworkCore.InMemory --version 10.0.0
+
 # add references between projects in backend
 
-dotnet add reference Contracts               --project Database
-dotnet add reference Contracts Database      --project Core
-dotnet add reference Contracts Database Core --project Host
+dotnet add Database reference Contracts
+dotnet add Core     reference Contracts
+dotnet add Host     reference Contracts Database Core
 ```
 
 ### Trust HTTPS Dev Cert
@@ -90,7 +105,7 @@ dotnet sln add WebCore
 
 # add references between projects in frontend
 
-dotnet add reference ShopClient                      --project WebContracts
-dotnet add reference WebContracts ShopClient         --project WebCore
-dotnet add reference WebContracts ShopClient WebCore --project WebFrontend
+dotnet add WebContracts reference ShopClient
+dotnet add WebCore      reference WebContracts ShopClient
+dotnet add WebFrontend  reference WebContracts ShopClient WebCore 
 ```

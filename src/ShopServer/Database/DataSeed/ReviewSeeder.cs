@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Contracts.Review.Entities;
-using Contracts.Review.Entities.Enums;
+using Contracts.Reviews.Entities;
+using Contracts.Reviews.Entities.Enums;
 
 namespace Database.DataSeed;
 
