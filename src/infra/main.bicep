@@ -132,7 +132,7 @@ module logAnalytics 'br/public:avm/res/operational-insights/workspace:0.14.2' = 
 }
 
 module monitoring 'br/public:avm/res/insights/component:0.7.1' = {
-  name: '${uniqueString(deployment().name, location)}-appinsights'
+  name: '${uniqueString(deployment().name, location)}-monitoring'
   scope: rg
   params: {
     name: '${abbrs.insightsComponents}${resourceToken}'
@@ -198,12 +198,13 @@ module migrationJob './app/migration-job.bicep' = {
 
 module containerAppsServerApp 'app/container-apps.bicep' = {
   name: 'container-apps-server'
-  scope: rg  
+  scope: rg
   params: {
     name: nameServer
     imageApp: imageServer
     tags: tags
     environmentResourceId: containerAppsEnvironment.outputs.resourceId
+    applicationInsightsConnectionString: monitoring.outputs.connectionString
     identityClientId: managedIdentity.outputs.clientId
     identityResourceId: managedIdentity.outputs.resourceId
     dockerHubUsername: dockerHubUsername
@@ -237,12 +238,14 @@ module containerAppsServerApp 'app/container-apps.bicep' = {
 
 module containerAppsWebApp 'app/container-apps.bicep' = {
   name: 'container-apps-web'
-  scope: rg  
+  scope: rg
   params: {
     name: nameWeb
     imageApp: imageWeb
     tags: tags
     environmentResourceId: containerAppsEnvironment.outputs.resourceId
+    applicationInsightsConnectionString: monitoring.outputs.connectionString
+    identityClientId: managedIdentity.outputs.clientId
     dockerHubUsername: dockerHubUsername
     dockerHubToken: dockerHubToken
     secrets: [

@@ -1,0 +1,12 @@
+@ShopServer_HostAddress = https://localhost:5051
+
+GET {{ShopServer_HostAddress}}/api/products/
+Accept: application/json
+
+###
+GET {{ShopServer_HostAddress}}/api/products/?fromPrice=100&toPrice=201
+Accept: application/json
+
+###
+GET {{ShopServer_HostAddress}}/api/products/?fromPrice=100&toPrice=200&brand=1
+Accept: application/json

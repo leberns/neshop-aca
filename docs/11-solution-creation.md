@@ -16,7 +16,7 @@ dotnet sln ./ShopServer.sln migrate
 
 rm ./ShopServer.sln
 
-dotnet new webapi --use-controllers -n Host --framework net10.0
+dotnet new webapi -n Host --framework net10.0
 dotnet sln add ./Host/Host.csproj
 
 dotnet new classlib -n Contracts --framework net10.0
@@ -51,12 +51,27 @@ dotnet add AiClient package Azure.AI.OpenAI --version 2.1.0
 dotnet add Database package Pgvector --version 0.3.2 
 dotnet add Database package Pgvector.EntityFrameworkCore --version 0.3.2 
 
+# add core tests
+dotnet new xunit -o Core.Tests
+dotnet sln add Core.Tests
+dotnet add Core.Tests reference Core
+dotnet add Core.Tests reference Contracts
+dotnet add Core.Tests package Moq --version 4.20.72
+
+# add database tests
+dotnet new xunit -o Database.Tests
+dotnet sln add Database.Tests
+dotnet add Database.Tests reference Database
+dotnet add Database.Tests reference Contracts
+dotnet add Database.Tests package Moq --version 4.20.72
+dotnet add Database.Tests package Microsoft.EntityFrameworkCore.InMemory --version 10.0.0
+
 # add references between projects in backend
 
-dotnet add reference Contracts                        --project Database
-dotnet add reference Contracts                        --project AiClient
-dotnet add reference Contracts Database AiClient      --project Core
-dotnet add reference Contracts Database AiClient Core --project Host
+dotnet add Database reference Contracts
+dotnet add AiClient reference Contracts
+dotnet add Core     reference Contracts AiClient
+dotnet add Host     reference Contracts Database AiClient Core
 ```
 
 ### Trust HTTPS Dev Cert
@@ -99,7 +114,7 @@ dotnet sln add WebCore
 
 # add references between projects in frontend
 
-dotnet add reference ShopClient                      --project WebContracts
-dotnet add reference WebContracts ShopClient         --project WebCore
-dotnet add reference WebContracts ShopClient WebCore --project WebFrontend
+dotnet add WebContracts reference ShopClient
+dotnet add WebCore      reference WebContracts ShopClient
+dotnet add WebFrontend  reference WebContracts ShopClient WebCore 
 ```

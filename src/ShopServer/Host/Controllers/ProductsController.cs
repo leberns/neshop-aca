@@ -37,14 +37,4 @@ public class ProductsController : ControllerBase
     {
         return await productsReader.GetProductById(productId, cancellationToken);
     }
-
-    [HttpGet(Name = "SearchProducts")]
-    public async Task<IEnumerable<ProductInfo>> SearchProducts(
-        string userQuery,
-        IProductsSearchService productsSearchService,
-        CancellationToken cancellationToken
-    )
-    {
-        return await productsSearchService.SearchProductsAsync(userQuery, cancellationToken);
-    }
 }

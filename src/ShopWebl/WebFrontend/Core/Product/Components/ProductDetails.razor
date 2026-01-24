@@ -1,0 +1,9 @@
+@using ShopWeb.ShopClient
+
+<ProductCard Product="Product"></ProductCard>
+<p>@Product.Description</p>
+
+@code {
+    [Parameter]
+    public required ProductInfo Product { get; set; }
+}

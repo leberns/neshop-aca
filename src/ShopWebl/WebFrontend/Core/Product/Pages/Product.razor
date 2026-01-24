@@ -1,0 +1,45 @@
+﻿@page "/product"
+@implements IDisposable
+@using Microsoft.AspNetCore.Components.Web
+@using ShopWeb.ShopClient
+@using WebContracts
+@using WebFrontend.Core.Product.Components
+@attribute [StreamRendering]
+@inject IProductsService ProductsService
+
+<PageTitle>Product - NeShop</PageTitle>
+
+@if (_product is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h1>@_product?.Name</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        <div class="col">
+            <ProductDetails Product="_product"></ProductDetails>
+        </div>
+    </div>
+}
+
+@code {
+    private readonly CancellationTokenSource _cts = new();
+
+    private ProductInfo? _product;
+
+    [SupplyParameterFromQuery]
+    public int ProductId { get; init; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _product = await ProductsService.GetProductById(ProductId, _cts.Token);
+    }
+
+    public void Dispose()
+    {
+        _cts.Cancel();
+        _cts.Dispose();
+    }
+}

@@ -1,5 +1,5 @@
+using Contracts.ProductsCart.Entity;
 using Microsoft.EntityFrameworkCore;
-using Contracts.DataModels;
 
 namespace Database.DataSeed;
 

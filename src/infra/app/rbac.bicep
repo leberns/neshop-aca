@@ -1,4 +1,3 @@
-
 param appInsightsName string
 param aiName string
 param managedIdentityPrincipalId string // Principal ID for the Managed Identity

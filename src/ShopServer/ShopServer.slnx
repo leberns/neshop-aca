@@ -1,7 +1,9 @@
 <Solution>
   <Project Path="AiClient/AiClient.csproj" />
   <Project Path="Contracts/Contracts.csproj" />
+  <Project Path="Core.Tests/Core.Tests.csproj" />
   <Project Path="Core/Core.csproj" />
+  <Project Path="Database.Tests/Database.Tests.csproj" />
   <Project Path="Database/Database.csproj" />
   <Project Path="Host/Host.csproj" />
 </Solution>

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Contracts.DataModels;
+using Contracts.Images.Entities;
 
 namespace Database.DataSeed;
 
