@@ -1,7 +1,9 @@
 <Solution>
   <Folder Name="/ShopServer/">
     <Project Path="ShopServer/Contracts/Contracts.csproj" />
+    <Project Path="ShopServer/Database.Tests/Database.Tests.csproj" />
     <Project Path="ShopServer/Database/Database.csproj" />
+    <Project Path="ShopServer/Core.Tests/Core.Tests.csproj" />
     <Project Path="ShopServer/Core/Core.csproj" />
     <Project Path="ShopServer/Host/Host.csproj" />
   </Folder>

@@ -1,3 +1,4 @@
+using Contracts.Products.Repositories;
 using Contracts.Products.Services;
 using Core.Products;
 using Database;
@@ -17,7 +18,7 @@ var postgresDataSource = builder.ConfigurePostgresDataSource(logger);
 builder.Services
     .AddAppDbContext(postgresDataSource)
     .AddSeeders()
-    .AddScoped<ProductsRepository>()
+    .AddScoped<IProductRepository, ProductRepository>()
     .AddScoped<IProductsReader, ProductsReader>();
 
 builder.Services.AddAuthorization();

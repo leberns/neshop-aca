@@ -41,7 +41,6 @@ public class ProductSeeder : ISeeder
                 Price = 485.99m,
                 Description = "A heavy-duty basecamp tent built for extreme conditions."
             },
-
             new Product
             {
                 Id = 4,
@@ -60,7 +59,6 @@ public class ProductSeeder : ISeeder
                 Price = 189.50m,
                 Description = "Reinforced leather boots for technical rocky scrambles."
             },
-
             new Product
             {
                 Id = 6,

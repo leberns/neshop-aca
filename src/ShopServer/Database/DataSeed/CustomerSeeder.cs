@@ -1,4 +1,4 @@
-using Contracts.Customer.Entities;
+using Contracts.Customers.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database.DataSeed;
