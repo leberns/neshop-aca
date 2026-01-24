@@ -1,9 +1,10 @@
 ﻿@page "/products"
 @implements IDisposable
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Web
 @using ShopWeb.ShopClient
 @using WebContracts
-@using WebFrontend.Components.Core
+@using WebFrontend.Core.Product.Components
 @attribute [StreamRendering]
 @inject ILogger<Products> Logger
 @inject IProductsService ProductsService
@@ -26,9 +27,6 @@ else
                 <ProductCard Product="product"></ProductCard>
             </div>
         }
-    </div>
-    <div>
-        <p>Culture: @(CultureInfo.CurrentCulture.Name), UI Culture: @(CultureInfo.CurrentUICulture.Name)</p>
     </div>
 }
 
