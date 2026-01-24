@@ -4,13 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebContracts\WebContracts.csproj" />
     <ProjectReference Include="..\ShopClient\ShopClient.csproj" />
+    <ProjectReference Include="..\WebContracts\WebContracts.csproj" />
     <ProjectReference Include="..\WebCore\WebCore.csproj" />
   </ItemGroup>
 
