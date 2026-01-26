@@ -274,8 +274,8 @@ module rbac 'app/rbac.bicep' = {
   name: 'rbac-assignments'
   scope: rg
   params: {
-    appInsightsName: monitoring.outputs.name
-    aiName: aiResource.outputs.name
+    monitoringName: monitoring.outputs.name
+    aiResourceName: aiResource.outputs.name
     managedIdentityPrincipalId: managedIdentity.outputs.principalId
     userIdentityPrincipalId: postgresEntraAdministratorObjectId
   }
