@@ -18,7 +18,9 @@ param postgresAdministratorPassword = readEnvironmentVariable('POSTGRESQL_ADMIN_
 param postgresDatabaseName = readEnvironmentVariable('POSTGRESQL_DATABASE_NAME', 'neshopdb')
 
 param nameServer = 'ca-neshop-server'
-param imageServer = 'leberns/neshop:server-latest' // 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+param imageServer = 'leberns/neshop:server-latest'
 
 param nameWeb = 'ca-neshop-webl'
-param imageWeb = 'leberns/neshop:webl-latest' // 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+param imageWeb = 'leberns/neshop:webl-latest'
+
+param aiResourceLocation = 'uaenorth'

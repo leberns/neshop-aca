@@ -54,13 +54,19 @@ export POSTGRESQL_ADMIN_PASSWORD
 read -s POSTGRESQL_ADMIN_PASSWORD # enter a password, something more complex than pospassw0rd
 ```
 
-## Deployment
+## Infrastructure deployment
 
 ```Sh
 # deploy the infrastructure
 cd ~/Dev/neshop-aca/src/infra
 
-az deployment sub create --name deploy-$AZURE_ENV_NAME --subscription $SUBSCRIPTION_ID --location $AZURE_LOCATION --template-file main.bicep --parameters main.bicepparam
+az deployment sub create \
+  --name deploy-$AZURE_ENV_NAME \
+  --subscription $SUBSCRIPTION_ID \
+  --location $AZURE_LOCATION \
+  --template-file main.bicep \
+  --parameters main.bicepparam \
+  --output table
 ```
 
 ```Sh

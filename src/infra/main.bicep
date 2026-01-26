@@ -47,13 +47,13 @@ param location string
 param nameServer string
 
 @description('Tag of backend server image to be provisioned on Docker Hub')
-param imageServer string
+param imageServer string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
 @description('Name of web frontend')
 param nameWeb string
 
 @description('Tag of web frontend image to be provisioned on Docker Hub')
-param imageWeb string
+param imageWeb string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
 @description('Docker Hub username')
 param dockerHubUsername string = ''
@@ -77,6 +77,9 @@ param postgresAdministratorPassword string
 
 @description('Database name')
 param postgresDatabaseName string
+
+@description('The region to allocate the AI resources, models are normally not available in all regions, verify before trying to deploy in other regions')
+param aiResourceLocation string
 
 var abbrs = loadJsonContent('./utils/abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
@@ -148,7 +151,7 @@ module aiResource './app/azure-openai.bicep' = {
   scope: rg
   params: {
     name: '${abbrs.cognitiveServicesAccounts}${resourceToken}'
-    location: location
+    location: aiResourceLocation
     tags: tags
   }
 }

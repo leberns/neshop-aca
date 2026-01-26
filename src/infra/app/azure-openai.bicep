@@ -1,10 +1,7 @@
-@description('Location for AI resources. Change this location parameter if the deployment fails because region do not have the model')
+@description('Location for AI resources. Change this location parameter if the deployment fails because region do not have the models')
 param location string = resourceGroup().location
 param name string
 param tags object = {}
-
-var chatModelName = 'gpt-4o-mini'
-var textEmbeddingModelName = 'text-embedding-3-small'
 
 module aiResource 'br/public:avm/res/cognitive-services/account:0.14.1' = {
   name: 'ai-resource-${name}'
@@ -23,24 +20,24 @@ module aiResource 'br/public:avm/res/cognitive-services/account:0.14.1' = {
     publicNetworkAccess: 'Enabled'
     deployments: [
       {
-        name: 'model-${textEmbeddingModelName}'
+        name: 'embedding-model'
         sku: {
           name: 'Standard'
         }
         model: {
+          name: 'text-embedding-3-small'
           format: 'OpenAI'
-          name: textEmbeddingModelName
           version: '2025-06-01'
         }
       }
       {
-        name: 'model-${chatModelName}'
+        name: 'chat-model'
         sku: {
           name: 'Standard'
         }
         model: {
+          name: 'gpt-4o-mini'
           format: 'OpenAI'
-          name: chatModelName
           version: '2025-06-01'
         }
       }
