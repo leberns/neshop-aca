@@ -23,4 +23,4 @@ param imageServer = 'leberns/neshop:server-latest'
 param nameWeb = 'ca-neshop-webl'
 param imageWeb = 'leberns/neshop:webl-latest'
 
-param aiResourceLocation = 'uaenorth'
+param aiResourceLocation = 'swedencentral'
