@@ -14,4 +14,7 @@
     <Project Path="ShopWebl/WebCore/WebCore.csproj" />
     <Project Path="ShopWebl/WebFrontend/WebFrontend.csproj" />
   </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="tools/CheckChatAzure/CheckChatAzure.csproj" />
+  </Folder>
 </Solution>
