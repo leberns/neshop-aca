@@ -1,4 +1,4 @@
-// Flexible Server for PostgreSQL
+// Platform-as-a-Service: Azure Database for PostgreSQL flexible server
 
 param name string
 param location string = resourceGroup().location
