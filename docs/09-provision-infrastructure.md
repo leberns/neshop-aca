@@ -83,7 +83,7 @@ az group delete --name rg-dev-neshop-aca
 # Purge cognitive services, needed after deleting the resource group.
 # Update location according to the region where the cognitive services were deployed.
 az cognitiveservices account purge \
-  --name cog-mo7xupkdn22ec \
+  --name cog-neshop1 \
   --resource-group rg-dev-neshop-aca \
   --location swedencentral
 ```

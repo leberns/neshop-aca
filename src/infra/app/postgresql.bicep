@@ -44,10 +44,11 @@ param identityType string
 @description('Names of the databases to be created on the server')
 param databaseNames array = []
 
-@description('PostgreSQL version (version 16 should support managed identities)')
-param version string = '18'
+@description('PostgreSQL version (version 17 supports azure_ai extension, version 18 at the moment do not)')
+param version string = '17'
 
 var hasEntra = !empty(entraAdministratorObjectId) && !empty(entraAdministratorName) && !empty(entraAdministratorType) ? true : false
+var hasPassword = !empty(administratorLogin) && !empty(administratorPassword) ? true : false
 
 module postgresServer 'br/public:avm/res/db-for-postgre-sql/flexible-server:0.15.1' = {
   name: 'postgresServer'
@@ -60,14 +61,8 @@ module postgresServer 'br/public:avm/res/db-for-postgre-sql/flexible-server:0.15
     publicNetworkAccess: 'Enabled'
     authConfig: {
       activeDirectoryAuth: hasEntra ? 'Enabled' : fail('Entra administrator are required, provide object id, name (email) and type.')
-      passwordAuth: !empty(administratorLogin) && !empty(administratorPassword) ? 'Enabled' : 'Disabled'
+      passwordAuth: hasPassword ? 'Enabled' : 'Disabled'
     }
-    configurations: [
-      {
-        name: 'azure.extensions'
-        value: 'azure_ai,vector'
-      }
-    ]
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorPassword
     administrators: [
@@ -108,6 +103,21 @@ module postgresServer 'br/public:avm/res/db-for-postgre-sql/flexible-server:0.15
         '${identityResourceId}'
       ]
     }
+  }
+}
+
+resource postgresServerResource 'Microsoft.DBforPostgreSQL/flexibleServers@2025-08-01' existing = {
+  name: name
+}
+
+// Allow a few extensions to be activated by the application.
+// It was not possible to use the configurations object in the module postgresServer to define these extensions.
+resource allowAzureExtensions 'Microsoft.DBforPostgreSQL/flexibleServers/configurations@2025-08-01' = {
+  name: 'azure.extensions'
+  parent: postgresServerResource
+  properties: {
+    source: 'user-override'
+    value: 'azure_ai,vector'
   }
 }
 
