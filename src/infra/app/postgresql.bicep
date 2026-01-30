@@ -62,6 +62,12 @@ module postgresServer 'br/public:avm/res/db-for-postgre-sql/flexible-server:0.15
       activeDirectoryAuth: hasEntra ? 'Enabled' : fail('Entra administrator are required, provide object id, name (email) and type.')
       passwordAuth: !empty(administratorLogin) && !empty(administratorPassword) ? 'Enabled' : 'Disabled'
     }
+    configurations: [
+      {
+        name: 'azure.extensions'
+        value: 'pgvector'
+      }
+    ]
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorPassword
     administrators: [

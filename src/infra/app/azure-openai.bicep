@@ -13,9 +13,11 @@ module aiResource 'br/public:avm/res/cognitive-services/account:0.14.1' = {
 
     sku: 'S0'
     kind: 'OpenAI'
+    disableLocalAuth: false
     apiProperties: {
       enableManagedIdentity: true
       scaleType: 'Standard'
+      customSubDomainName: name
     }
     publicNetworkAccess: 'Enabled'
     deployments: [
