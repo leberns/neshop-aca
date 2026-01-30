@@ -87,3 +87,7 @@ az cognitiveservices account purge \
   --resource-group rg-dev-neshop-aca \
   --location swedencentral
 ```
+
+```Sh
+az cognitiveservices account list --query "[].{name:name, resourceGroup:resourceGroup, endpoint:properties.endpoint}"
+```
