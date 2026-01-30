@@ -24,3 +24,4 @@ param nameWeb = 'ca-neshop-webl'
 param imageWeb = 'leberns/neshop:webl-latest'
 
 param aiResourceLocation = 'swedencentral'
+param aiResourceSuffix = 'neshop1'

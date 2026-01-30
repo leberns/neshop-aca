@@ -65,7 +65,7 @@ module postgresServer 'br/public:avm/res/db-for-postgre-sql/flexible-server:0.15
     configurations: [
       {
         name: 'azure.extensions'
-        value: 'pgvector'
+        value: 'azure_ai,vector'
       }
     ]
     administratorLogin: administratorLogin
