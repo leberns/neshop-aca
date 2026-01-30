@@ -113,25 +113,4 @@ module postgresServer 'br/public:avm/res/db-for-postgre-sql/flexible-server:0.15
   }
 }
 
-// resource postgresServerResource 'Microsoft.DBforPostgreSQL/flexibleServers@2025-08-01' existing = {
-//   name: name
-//   dependsOn: [
-//     postgresServer
-//   ]
-// }
-//
-// // Allow a few extensions to be activated by the application.
-// // It was not possible to use the configurations object in the module postgresServer to define these extensions.
-// resource allowAzureExtensions 'Microsoft.DBforPostgreSQL/flexibleServers/configurations@2025-08-01' = {
-//   name: 'allow-azure.extensions'
-//   parent: postgresServerResource
-//   properties: {
-//     source: 'user-override'
-//     value: 'VECTOR,AZURE_AI'
-//   }
-//   dependsOn: [
-//     postgresServerResource
-//   ]
-// }
-
 output fqdn string =  postgresServer.outputs.?fqdn ?? fail('PostgreSQL FQDN not available')
