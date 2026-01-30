@@ -113,7 +113,7 @@ resource postgresServerResource 'Microsoft.DBforPostgreSQL/flexibleServers@2025-
 // Allow a few extensions to be activated by the application.
 // It was not possible to use the configurations object in the module postgresServer to define these extensions.
 resource allowAzureExtensions 'Microsoft.DBforPostgreSQL/flexibleServers/configurations@2025-08-01' = {
-  name: 'azure.extensions'
+  name: 'allow-azure.extensions'
   parent: postgresServerResource
   properties: {
     source: 'user-override'
