@@ -78,3 +78,12 @@ az group list
 # delete the resource group to avoid incurring charges (after using it)
 az group delete --name rg-dev-neshop-aca
 ```
+
+```Sh
+# Purge cognitive services, needed after deleting the resource group.
+# Update location according to the region where the cognitive services were deployed.
+az cognitiveservices account purge \
+  --name cog-mo7xupkdn22ec \
+  --resource-group rg-dev-neshop-aca \
+  --location swedencentral
+```
