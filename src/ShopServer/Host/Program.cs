@@ -1,11 +1,11 @@
-using AiClient.Services;
-using Contracts.Embedding.Services;
+using AiClient.AzureEmbedding;
+using AiClient.Interfaces;
+using AiClient.Products;
 using Contracts.Products.Repositories;
 using Contracts.Products.Services;
 using Contracts.ProductsAiSearch.Repositories;
 using Contracts.ProductsAiSearch.Services;
 using Core.Products;
-using Core.ProductsAiSearch;
 using Database;
 using Database.DataSeed;
 using Host.Api;
@@ -24,12 +24,13 @@ var postgresDataSource = PostgresDataSource.Configure(builder.Configuration, log
 builder.Services
     .AddAppDbContext(postgresDataSource)
     .AddSeeders()
-    .AddAppAiClient(builder.Configuration, logger)
-    .AddScoped<IEmbedder, AppAzureOpenAiEmbedder>()
+    .AddAppAzureOpenAiClient(builder.Configuration, logger)
+    .AddScoped<ITextEmbedder, AzureTextEmbedder>()
+    .AddScoped<IProductEmbedder, ProductEmbedder>()
     .AddScoped<IProductRepository, ProductRepository>()
     .AddScoped<IProductRepositoryAiSearch, ProductRepositoryAiSearch>()
     .AddScoped<IProductsReader, ProductsReader>()
-    .AddScoped<IProductRagService, ProductRagService>()
+    .AddScoped<IProductSearchService, ProductSearchService>()
     .AddScoped<IProductsSearchService, ProductsSearchService>();
 
 builder.Services

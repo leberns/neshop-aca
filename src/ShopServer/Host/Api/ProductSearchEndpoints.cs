@@ -1,4 +1,5 @@
 using Contracts.Products.ApiModels;
+using Contracts.Products.Services;
 using Contracts.ProductsAiSearch.ApiModels;
 using Contracts.ProductsAiSearch.Services;
 using Microsoft.AspNetCore.Mvc;

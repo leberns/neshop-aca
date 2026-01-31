@@ -1,6 +1,6 @@
 using Contracts.Products.ApiModels;
 
-namespace Contracts.ProductsAiSearch.Services;
+namespace Contracts.Products.Services;
 
 public interface IProductsSearchService
 {

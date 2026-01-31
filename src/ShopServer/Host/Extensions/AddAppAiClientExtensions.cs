@@ -6,7 +6,7 @@ namespace Host.Extensions;
 
 public static class AddAppAiClientExtensions
 {
-    public static IServiceCollection AddAppAiClient(
+    public static IServiceCollection AddAppAzureOpenAiClient(
         this IServiceCollection services,
         ConfigurationManager configuration,
         ILogger logger)

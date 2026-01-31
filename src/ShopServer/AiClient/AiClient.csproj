@@ -16,4 +16,16 @@
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Products\ProductSearchService.logger.cs">
+      <DependentUpon>ProductSearchService.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Products\ProductEmbedder.logger.cs">
+      <DependentUpon>ProductEmbedder.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

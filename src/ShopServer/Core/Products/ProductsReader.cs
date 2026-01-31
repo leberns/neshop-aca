@@ -26,6 +26,8 @@ public partial class ProductsReader(
     {
         LogGetProductById(logger, nameof(GetProductById), productId);
 
-        return (await repository.GetProductById(productId, cancellationToken)).ToProductInfo();
+        var product = await repository.GetProductById(productId, cancellationToken);
+
+        return product.ToProductInfo();
     }
 }

@@ -1,20 +1,27 @@
+using Pgvector;
 using Contracts.Products.Entities;
 
 namespace Contracts.ProductsAiSearch.Entity;
 
 public record ProductEmbedding
 {
-    public int Id { get; set; }
+    public required int Id { get; init; }
 
-    public int ProductId { get; set; }
+    public required int ProductId { get; init; }
 
-    public Product Product { get; set; } = null!;
+    public required Product Product { get; init; }
 
-    public float[] Vector { get; set; } = [];
+    public required string Content { get; init; }
 
-    public string SourceText { get; set; } = "";
+    public required decimal Price { get; init; }
 
-    public DateTime GeneratedAtUtc { get; set; }
+    public required string Category { get; init; }
 
-    public string Model { get; set; } = "";
+    public required string Brand { get; init; }
+
+    public required DateTime GeneratedAtUtc { get; init; }
+
+    public required string Model { get; init; }
+
+    public required Vector Embedding { get; init; }
 }

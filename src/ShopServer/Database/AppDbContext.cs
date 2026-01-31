@@ -54,12 +54,8 @@ public sealed class AppDbContext(
 
         modelBuilder.Entity<ProductEmbedding>(builder =>
         {
-            builder.Property(e => e.Vector)
-                .HasColumnType(Constants.Ai.DbType)
-                .HasConversion(
-                    v => new Vector(v),
-                    v => v.ToArray()
-                );
+            builder.Property(e => e.Embedding)
+                .HasColumnType(Constants.AiAzureEmbedding.DbType);
         });
 
         foreach (var seeder in seeders)

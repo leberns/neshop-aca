@@ -31,7 +31,7 @@ public class ProductRepositoryAiSearch(
         var pgVector = new Vector(vector);
 
         return await dbContext.ProductEmbeddings
-            .OrderBy(e => e.Vector.L2Distance(pgVector))
+            .OrderBy(e => e.Embedding.L2Distance(pgVector))
             .Take(limit)
             .Select(e => e.Product)
             .Include(p => p.Brand)
