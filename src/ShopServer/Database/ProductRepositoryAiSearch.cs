@@ -14,6 +14,8 @@ public class ProductRepositoryAiSearch(
     public async Task<List<Product>> GetSearchableProducts(CancellationToken cancellationToken)
     {
         return await dbContext.Products
+            .Include(p => p.Brand)
+            .Include(p => p.Category)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }

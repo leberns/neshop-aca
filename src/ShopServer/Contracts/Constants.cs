@@ -20,7 +20,7 @@ public static class Constants
 
     public static class AiAzureEmbedding
     {
-        public const string ModelName = "text-embedding-3-small";
+        public const string DeploymentName = "embedding-model";
 
         /// <summary>
         /// Column type with embedding model dimensions (text-embedding-3-small has 1536 dimensions)
@@ -30,6 +30,6 @@ public static class Constants
 
     public static class AiAzureChat
     {
-        public const string ModelName = "gpt-4o-mini";
+        public const string DeploymentName = "chat-model";
     }
 }

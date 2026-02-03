@@ -2,5 +2,5 @@ namespace AiClient.Interfaces;
 
 public interface IChatService
 {
-    public Task GenerateEmbeddingsAsync(CancellationToken cancellationToken);
+    public Task<string> RespondAsync(string systemMessage, string userQuery, string assistantMessage, CancellationToken cancellationToken);
 }

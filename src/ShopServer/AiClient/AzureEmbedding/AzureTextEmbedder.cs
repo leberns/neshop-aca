@@ -12,11 +12,11 @@ public class AzureTextEmbedder(
     AzureOpenAIClient clientFactory
     ) : ITextEmbedder
 {
-    public async Task<float[]> EmbedTextAsync(string text, CancellationToken cancellationToken)
+    public async Task<float[]> GenerateEmbeddingAsync(string text, CancellationToken cancellationToken)
     {
-        var client = clientFactory.GetEmbeddingClient(Contracts.Constants.AiAzureEmbedding.ModelName);
+        var client = clientFactory.GetEmbeddingClient(Contracts.Constants.AiAzureEmbedding.DeploymentName);
 
-        OpenAIEmbedding embedding = await client.GenerateEmbeddingAsync(text, cancellationToken: cancellationToken);
+        OpenAIEmbedding embedding = await client.GenerateEmbeddingAsync(text, null, cancellationToken);
 
         return embedding.ToFloats().ToArray();
     }

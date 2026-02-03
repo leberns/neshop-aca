@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AiClient.Products;
 
-public partial class ProductSearchService
+public partial class ProductRagService
 {
     [LoggerMessage(LogLevel.Information, "SearchingProductsWithUserQuery {userQuery}")]
-    static partial void LogSearchingProductsWithUserQuery(ILogger<ProductSearchService> logger, string userQuery);}
+    static partial void LogSearchingProductsWithUserQuery(ILogger<ProductRagService> logger, string userQuery);}

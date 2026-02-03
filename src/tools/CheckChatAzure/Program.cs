@@ -3,7 +3,7 @@ using Azure.Identity;
 using Azure.AI.OpenAI;
 
 var endpoint = new Uri("https://cog-neshop1.openai.azure.com/");
-var deploymentName = "chat-model";
+const string deploymentName = "chat-model"; // deployment name as per Bicep infrastructure
 
 AzureOpenAIClient azureClient = new(
     endpoint,

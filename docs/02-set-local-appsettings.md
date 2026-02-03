@@ -23,10 +23,15 @@ history -p
 ```
 
 ```Sh
-# set the connection string to Azure PostgreSQL after provisioning the infrastructure on Azure (update Host and Username!)
+# to execute locally referencing the infrastructure provisioned on Azure
 cd ~/Dev/neshop-aca/src/ShopServer/Host/
 
-dotnet user-secrets set "ConnectionStrings:ShopDatabase" "Host=psql-wiok5xjx2aqja.postgres.database.azure.com;Database=neshopdb;Username=your-email@outlook.com;Ssl Mode=Require;"
+# the connection string to Azure PostgreSQL: update Host and Username before updating this setting!
+dotnet user-secrets set "ConnectionStrings:ShopDatabase" "Host=psql-mo7xupkdn22ec.postgres.database.azure.com;Database=neshopdb;Username=your-email@outlook.com;Ssl Mode=Require;"
+
+# set the Azure OpenAI endpoint
+dotnet user-secrets set "AiOptions:Endpoint" "https://cog-neshop1.openai.azure.com/"
+
 ```
 
 ```Sh

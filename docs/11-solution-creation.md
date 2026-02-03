@@ -48,6 +48,7 @@ dotnet add Database package Npgsql.EntityFrameworkCore.PostgreSQL --version 10.0
 
 ## add AI / RAG functionality
 dotnet add AiClient package Azure.AI.OpenAI --version 2.1.0
+dotnet add AiClient package Microsoft.Extensions.AI --version 10.2.0
 dotnet add Database package Pgvector --version 0.3.2 
 dotnet add Database package Pgvector.EntityFrameworkCore --version 0.3.2 
 

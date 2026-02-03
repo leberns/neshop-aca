@@ -1,10 +1,10 @@
+using AiClient.AzureChat;
 using AiClient.AzureEmbedding;
 using AiClient.Interfaces;
 using AiClient.Products;
 using Contracts.Products.Repositories;
 using Contracts.Products.Services;
 using Contracts.ProductsAiSearch.Repositories;
-using Contracts.ProductsAiSearch.Services;
 using Core.Products;
 using Database;
 using Database.DataSeed;
@@ -25,13 +25,14 @@ builder.Services
     .AddAppDbContext(postgresDataSource)
     .AddSeeders()
     .AddAppAzureOpenAiClient(builder.Configuration, logger)
+    .AddScoped<IChatService, AzureChatService>()
     .AddScoped<ITextEmbedder, AzureTextEmbedder>()
     .AddScoped<IProductEmbedder, ProductEmbedder>()
     .AddScoped<IProductRepository, ProductRepository>()
     .AddScoped<IProductRepositoryAiSearch, ProductRepositoryAiSearch>()
     .AddScoped<IProductsReader, ProductsReader>()
-    .AddScoped<IProductSearchService, ProductSearchService>()
-    .AddScoped<IProductsSearchService, ProductsSearchService>();
+    .AddScoped<IProductRagService, ProductRagService>()
+    .AddScoped<IProductsAiSearchService, ProductsAiSearchService>();
 
 builder.Services
     .AddAuthorization()

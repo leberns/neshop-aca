@@ -7,18 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AiClient\AiClient.csproj" />
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Products\ProductsReader.logger.cs">
       <DependentUpon>ProductsReader.cs</DependentUpon>
     </Compile>
-    <Compile Update="Products\ProductsSearchService.logger.cs">
+    <Compile Update="Products\ProductsAiSearchService.logger.cs">
       <DependentUpon>ProductsSearchService.cs</DependentUpon>
     </Compile>
   </ItemGroup>

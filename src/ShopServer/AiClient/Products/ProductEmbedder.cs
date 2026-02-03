@@ -25,7 +25,12 @@ public partial class ProductEmbedder(
     {
         var content = product.ToEmbeddingContent();
 
-        var embedding = await textEmbedder.EmbedTextAsync(content, cancellationToken);
+        var embedding = await textEmbedder.GenerateEmbeddingAsync(content, cancellationToken);
+        // var embedding = new float[1536];
+        // for (var i = 0; i < embedding.Length; i++)
+        // {
+        //     embedding[i] = 64;
+        // }
 
         var productEmbedding = await productAiSearch.FindProductEmbeddingById(product.Id, cancellationToken);
 
@@ -42,7 +47,7 @@ public partial class ProductEmbedder(
                 Content = content,
                 Embedding = new Vector(embedding),
                 GeneratedAtUtc = DateTime.UtcNow,
-                Model = Contracts.Constants.AiAzureEmbedding.ModelName,
+                Model = Contracts.Constants.AiAzureEmbedding.DeploymentName,
             };
 
             await productAiSearch.AddProductEmbedding(newProductEmbedding, cancellationToken);
@@ -58,7 +63,7 @@ public partial class ProductEmbedder(
                 Content = content,
                 Embedding = new Vector(embedding),
                 GeneratedAtUtc = DateTime.UtcNow,
-                Model = Contracts.Constants.AiAzureEmbedding.ModelName
+                Model = Contracts.Constants.AiAzureEmbedding.DeploymentName
             };
 
             await productAiSearch.UpdateProductEmbedding(updatedProductEmbedding, cancellationToken);
