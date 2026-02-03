@@ -1,4 +1,4 @@
-# Getting Started - Deploying to Azure
+# Getting Started – Deploying to Azure with GitHub CI/CD
 
 How to deploy from your GitHub repository to your Azure account.
 

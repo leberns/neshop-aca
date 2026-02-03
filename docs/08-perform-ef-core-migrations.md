@@ -1,10 +1,6 @@
 # Perform EF Core migrations
 
-## Prerequisites
-
-PostgreSQL installed and running on your machine / container engine, see `docker-compose.yml`.
-
-## Create and execute the migration
+## Create the migration
 
 ```Sh
 # for the first time only: install the dotnet-ef tool
@@ -18,12 +14,14 @@ cat .config/dotnet-tools.json
 ```
 
 ```Sh
-# build and create the migration
+# for the first time only: build and create the migration
 cd ~/Dev/neshop-aca/src/ShopServer/
 
 dotnet build
 dotnet ef migrations add Initial --project Database --startup-project Host
 ```
+
+## Execute the migration
 
 ```Sh
 # execute the migration to create or update the database referenced in app settings

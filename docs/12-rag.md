@@ -27,4 +27,4 @@ PostgreSQL vector extension in .NET, see the Entity Framework Core section: http
 - Azure Portal > Create a resource > Azure OpenAI > Create (ex.: ai-openai-labs999)
 - an MS Foundry resource is created with the Azure OpenAI, look for it at https://ai.azure.com/
 - get endpoint in MS Foundry: https://ai-openai-labs999.openai.azure.com/
-- make model deployments 
+- make model deployments (see Infrastructure-as-code provisioning at `infra/` for details)

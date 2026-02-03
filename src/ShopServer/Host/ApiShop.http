@@ -1,10 +1,12 @@
 @ShopServer_HostAddress = https://localhost:5051
 
 ###
+# return if the NeShop server is running fine
 GET {{ShopServer_HostAddress}}/health/
 Accept: application/json
 
 ###
+# return the OpenApi specification for the NeShop server
 GET {{ShopServer_HostAddress}}/openapi/v1.json
 Accept: application/json
 
