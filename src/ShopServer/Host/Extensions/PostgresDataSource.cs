@@ -5,13 +5,13 @@ using Npgsql;
 
 namespace Host.Extensions;
 
-public static class PostgresDataSourceExtensions
+public static class PostgresDataSource
 {
-    public static NpgsqlDataSource? ConfigurePostgresDataSource(
-        this WebApplicationBuilder builder,
+    public static NpgsqlDataSource? Configure(
+        ConfigurationManager configuration,
         ILogger logger)
     {
-        var connectionString = builder.Configuration.GetConnectionString(Constants.ConnectionStringNames.ShopDatabase);
+        var connectionString = configuration.GetConnectionString(Constants.ConnectionStringNames.ShopDatabase);
         var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
         var hasConnectionString = !string.IsNullOrWhiteSpace(connectionString);
         var hasPassword = !string.IsNullOrWhiteSpace(dataSourceBuilder.ConnectionStringBuilder.Password);
@@ -23,14 +23,16 @@ public static class PostgresDataSourceExtensions
                 // When running with Azure username in the cloud or locally, there is no password. The managed identity is used to get a token.
                 logger.LogInformation("Using managed identity to fetch database token");
 
-                var options = builder.Configuration.GetSection(nameof(ManagedIdentityOptions)).Get<ManagedIdentityOptions>()
-                    ?? throw new InvalidOperationException($"{nameof(ManagedIdentityOptions)} are not configured");
+                var options = configuration.GetSection(nameof(ManagedIdentityOptions)).Get<ManagedIdentityOptions>()
+                              ?? throw new InvalidOperationException($"{nameof(ManagedIdentityOptions)} are not configured");
 
                 var tokenCredential = new DefaultAzureCredential(
                     new DefaultAzureCredentialOptions
                     {
                         ManagedIdentityClientId = options.ManagedIdentityClientId
                     });
+
+                dataSourceBuilder.UseVector();
 
                 dataSourceBuilder.UsePeriodicPasswordProvider(async (_, cancellationToken) =>
                 {

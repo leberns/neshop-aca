@@ -1,12 +1,13 @@
-# Provision infrastructure from a local machine
+# Provisioning the infrastructure on Azure from a local machine
 
 It is possible to deploy the application on Azure from a local machine instead of the GitHub Actions workflow.
 
-The infrastructure sources are in the `infra/` folder.
-
 ## Prerequisites
 
-- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+- [Azure](https://azure.microsoft.com/) free or pay-as-you-go account
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+
+It is assumed the code is locally in the `~/Dev/neshop-aca` folder on Linux / MacOS. On Windows just replace `~/Dev` by a path like `D:\Dev`.
 
 ## Check / install bicep locally
 
@@ -22,6 +23,8 @@ az bicep version
 
 ## Verify and update deployment parameters
 
+The infrastructure sources are in the `infra/` folder.
+
 The deployment parameters are defined in the `main.bicepparams` file. Verify if they are correct for your environment, location, etc.
 
 The most commonly changeable parameters are read from environment variables, it makes them flexible to use in a CI/CD pipeline later.
@@ -36,6 +39,9 @@ export AZURE_LOCATION='westeurope'
 
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 echo $SUBSCRIPTION_ID # make sure this is the right subscription where the infrastructure will be deployed
+
+# Application Insights connection string for neshop-aca - update according to the value in Azure Portal (after the provisioning)
+export APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://westeurope-5....."
 
 # login to dockerhub
 export DOCKERHUB_USERNAME='<username>' # your Docker Hub account username
@@ -54,13 +60,19 @@ export POSTGRESQL_ADMIN_PASSWORD
 read -s POSTGRESQL_ADMIN_PASSWORD # enter a password, something more complex than pospassw0rd
 ```
 
-## Deployment
+## Infrastructure deployment
 
 ```Sh
 # deploy the infrastructure
 cd ~/Dev/neshop-aca/src/infra
 
-az deployment sub create --name deploy-$AZURE_ENV_NAME --subscription $SUBSCRIPTION_ID --location $AZURE_LOCATION --template-file main.bicep --parameters main.bicepparam
+az deployment sub create \
+  --name deploy-$AZURE_ENV_NAME \
+  --subscription $SUBSCRIPTION_ID \
+  --location $AZURE_LOCATION \
+  --template-file main.bicep \
+  --parameters main.bicepparam \
+  --output table
 ```
 
 ```Sh
@@ -71,4 +83,17 @@ az group list
 ```Sh
 # delete the resource group to avoid incurring charges (after using it)
 az group delete --name rg-dev-neshop-aca
+```
+
+```Sh
+# Purge cognitive services, needed after deleting the resource group.
+# Update location according to the region where the cognitive services were deployed.
+az cognitiveservices account purge \
+  --name cog-neshop1 \
+  --resource-group rg-dev-neshop-aca \
+  --location swedencentral
+```
+
+```Sh
+az cognitiveservices account list --query "[].{name:name, resourceGroup:resourceGroup, endpoint:properties.endpoint}"
 ```

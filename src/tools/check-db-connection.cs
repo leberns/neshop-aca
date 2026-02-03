@@ -1,7 +1,7 @@
-// Test the database connection from the local machine.
+// Check the Azure database connection from the local machine.
 // Update userEmail and accessToken after first run, see below for details.
 // Execute the program with:
-// dotnet run test-db-connection.cs
+// dotnet run check-db-connection.cs
 
 #:package Npgsql@10.0.1
 

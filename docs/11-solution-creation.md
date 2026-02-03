@@ -28,6 +28,9 @@ dotnet sln add ./Core/Core.csproj
 dotnet new classlib -n Database --framework net10.0
 dotnet sln add ./Database/Database.csproj
 
+dotnet new classlib -n AiClient --framework net10.0
+dotnet sln add ./AiClient/AiClient.csproj
+
 # add Swagger UI package
 dotnet add Host package Swashbuckle.AspNetCore.SwaggerUI --version 10.1.0
 
@@ -42,6 +45,12 @@ dotnet add Database package Microsoft.EntityFrameworkCore.Design --version 10.0.
 
 # add Postgres
 dotnet add Database package Npgsql.EntityFrameworkCore.PostgreSQL --version 10.0.0
+
+## add AI / RAG functionality
+dotnet add AiClient package Azure.AI.OpenAI --version 2.1.0
+dotnet add AiClient package Microsoft.Extensions.AI --version 10.2.0
+dotnet add Database package Pgvector --version 0.3.2 
+dotnet add Database package Pgvector.EntityFrameworkCore --version 0.3.2 
 
 # add core tests
 dotnet new xunit -o Core.Tests
@@ -61,8 +70,9 @@ dotnet add Database.Tests package Microsoft.EntityFrameworkCore.InMemory --versi
 # add references between projects in backend
 
 dotnet add Database reference Contracts
-dotnet add Core     reference Contracts
-dotnet add Host     reference Contracts Database Core
+dotnet add AiClient reference Contracts
+dotnet add Core     reference Contracts AiClient
+dotnet add Host     reference Contracts Database AiClient Core
 ```
 
 ### Trust HTTPS Dev Cert

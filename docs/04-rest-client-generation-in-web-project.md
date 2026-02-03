@@ -1,6 +1,18 @@
-# Generate REST Client for Api in the Web project
+# Generating the REST Client to consume API in the Web project
 
-## Updating the ShopClient
+## Prerequisites
+
+[NSwag commandline tool](https://github.com/RicoSuter/NSwag/wiki/CommandLine) is installed and available in the path:
+
+```Sh
+dotnet tool install --global NSwag.ConsoleCore
+```
+
+```Sh
+nswag version
+```
+
+## Updating the ShopClient Project
 
 Create / update the dotnet OpenApi client to be used for REST calls from the Web project to the ShopServer backend.
 

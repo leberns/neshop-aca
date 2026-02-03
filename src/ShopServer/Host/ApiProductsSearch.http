@@ -1,0 +1,10 @@
+@ShopServer_HostAddress = https://localhost:5051
+
+POST {{ShopServer_HostAddress}}/api/products/search
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userQuery": "Are there any small tents?"
+}
+###

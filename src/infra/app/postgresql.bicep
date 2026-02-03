@@ -1,4 +1,4 @@
-// Flexible Server for PostgreSQL
+// Platform-as-a-Service: Azure Database for PostgreSQL flexible server
 
 param name string
 param location string = resourceGroup().location
@@ -44,10 +44,11 @@ param identityType string
 @description('Names of the databases to be created on the server')
 param databaseNames array = []
 
-@description('PostgreSQL version (version 16 should support managed identities)')
-param version string = '18'
+@description('PostgreSQL version (version 17 supports azure_ai extension, version 18 at the moment do not)')
+param version string = '17'
 
 var hasEntra = !empty(entraAdministratorObjectId) && !empty(entraAdministratorName) && !empty(entraAdministratorType) ? true : false
+var hasPassword = !empty(administratorLogin) && !empty(administratorPassword) ? true : false
 
 module postgresServer 'br/public:avm/res/db-for-postgre-sql/flexible-server:0.15.1' = {
   name: 'postgresServer'
@@ -57,10 +58,17 @@ module postgresServer 'br/public:avm/res/db-for-postgre-sql/flexible-server:0.15
     tags: tags
     skuName: skuName
     tier: tier
+    configurations: [
+      {
+        name: 'azure.extensions'
+        source: 'user-override'
+        value: 'VECTOR,AZURE_AI'
+      }
+    ]
     publicNetworkAccess: 'Enabled'
     authConfig: {
       activeDirectoryAuth: hasEntra ? 'Enabled' : fail('Entra administrator are required, provide object id, name (email) and type.')
-      passwordAuth: !empty(administratorLogin) && !empty(administratorPassword) ? 'Enabled' : 'Disabled'
+      passwordAuth: hasPassword ? 'Enabled' : 'Disabled'
     }
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorPassword

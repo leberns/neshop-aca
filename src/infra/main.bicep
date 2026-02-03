@@ -47,13 +47,13 @@ param location string
 param nameServer string
 
 @description('Tag of backend server image to be provisioned on Docker Hub')
-param imageServer string
+param imageServer string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
 @description('Name of web frontend')
 param nameWeb string
 
 @description('Tag of web frontend image to be provisioned on Docker Hub')
-param imageWeb string
+param imageWeb string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
 @description('Docker Hub username')
 param dockerHubUsername string = ''
@@ -77,6 +77,12 @@ param postgresAdministratorPassword string
 
 @description('Database name')
 param postgresDatabaseName string
+
+@description('The region to allocate the AI resources, models are normally not available in all regions, verify before trying to deploy in other regions')
+param aiResourceLocation string
+
+@description('Suffix for the Azure cognitive services account name')
+param aiResourceNameSuffix string
 
 var abbrs = loadJsonContent('./utils/abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
@@ -140,6 +146,16 @@ module monitoring 'br/public:avm/res/insights/component:0.7.1' = {
     tags: tags
     workspaceResourceId: logAnalytics.outputs.resourceId
     disableLocalAuth: true
+  }
+}
+
+module aiResource './app/azure-openai.bicep' = {
+  name: 'ai-resource'
+  scope: rg
+  params: {
+    name: '${abbrs.cognitiveServicesAccounts}${aiResourceNameSuffix}'
+    location: aiResourceLocation
+    tags: tags
   }
 }
 
@@ -215,6 +231,10 @@ module containerAppsServerApp 'app/container-apps.bicep' = {
         value: managedIdentity.outputs.clientId
       }
       {
+        name: 'AiOptions__Endpoint'
+        value: aiResource.outputs.endpoint
+      }
+      {
         name: 'ASPNETCORE_HTTP_PORTS'
         value: '80;8080'
       }
@@ -257,7 +277,8 @@ module rbac 'app/rbac.bicep' = {
   name: 'rbac-assignments'
   scope: rg
   params: {
-    appInsightsName: monitoring.outputs.name
+    monitoringName: monitoring.outputs.name
+    aiResourceName: aiResource.outputs.name
     managedIdentityPrincipalId: managedIdentity.outputs.principalId
     userIdentityPrincipalId: postgresEntraAdministratorObjectId
   }

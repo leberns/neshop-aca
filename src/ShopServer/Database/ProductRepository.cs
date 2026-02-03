@@ -6,7 +6,7 @@ using Contracts.Products.Repositories;
 namespace Database;
 
 public class ProductRepository(
-    AppDbContext context
+    AppDbContext dbContext
     ) : IProductRepository
 {
     public async Task<List<Product>> GetProductsByFilter(
@@ -14,7 +14,7 @@ public class ProductRepository(
         CancellationToken cancellationToken
         )
     {
-        IQueryable<Product> query = context.Products
+        IQueryable<Product> query = dbContext.Products
             .Include(p => p.Brand)
             .Include(p => p.Category)
             .Include(p => p.Images);
@@ -44,7 +44,7 @@ public class ProductRepository(
         CancellationToken cancellationToken
     )
     {
-        IQueryable<Product> query = context.Products
+        IQueryable<Product> query = dbContext.Products
             .Where(p => p.Id == productId)
             .Include(p => p.Brand)
             .Include(p => p.Category)

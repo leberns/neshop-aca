@@ -1,15 +1,15 @@
+using Microsoft.Extensions.Logging;
 using Contracts.Products.ApiModels;
 using Contracts.Products.Filters;
 using Contracts.Products.Repositories;
 using Contracts.Products.Services;
-using Microsoft.Extensions.Logging;
 
 namespace Core.Products;
 
 public partial class ProductsReader(
     ILogger<ProductsReader> logger,
     IProductRepository repository
-    ) : IProductsReader
+) : IProductsReader
 {
     public async Task<List<ProductInfo>> GetProducts(
         ProductsFilter filter,
@@ -26,6 +26,8 @@ public partial class ProductsReader(
     {
         LogGetProductById(logger, nameof(GetProductById), productId);
 
-        return (await repository.GetProductById(productId, cancellationToken)).ToProductInfo();
+        var product = await repository.GetProductById(productId, cancellationToken);
+
+        return product.ToProductInfo();
     }
 }
