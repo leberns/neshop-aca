@@ -25,12 +25,7 @@ public partial class ProductEmbedder(
     {
         var content = product.ToEmbeddingContent();
 
-        //var embedding = await textEmbedder.GenerateEmbeddingAsync(content, cancellationToken);
-        var embedding = new float[1536];
-        for (var i = 0; i < embedding.Length; i++)
-        {
-            embedding[i] = 64;
-        }
+        var embedding = await textEmbedder.GenerateEmbeddingAsync(content, cancellationToken);
 
         var productEmbedding = await productAiSearch.FindProductEmbeddingById(product.Id, cancellationToken);
 

@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Logging;
 using Contracts.Products.ApiModels;
 using Contracts.Products.Filters;
 using Contracts.Products.Repositories;
 using Contracts.Products.Services;
-using Microsoft.Extensions.Logging;
 
 namespace Core.Products;
 

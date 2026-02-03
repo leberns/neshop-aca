@@ -15,9 +15,6 @@
     <Compile Update="Products\ProductsReader.logger.cs">
       <DependentUpon>ProductsReader.cs</DependentUpon>
     </Compile>
-    <Compile Update="Products\ProductsAiSearchService.logger.cs">
-      <DependentUpon>ProductsSearchService.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
 
 </Project>

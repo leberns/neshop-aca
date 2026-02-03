@@ -19,7 +19,7 @@ public partial class ProductRagService(
         string userQuery,
         CancellationToken cancellationToken)
     {
-        LogSearchingProductsWithUserQuery(logger, userQuery);
+        LogProductsChatResponding(logger, userQuery);
 
         if (!await repositoryAiSearch.AnyProductEmbeddings(cancellationToken))
         {
