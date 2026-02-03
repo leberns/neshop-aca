@@ -1,3 +1,5 @@
+using Contracts.ProductsAiSearch.ApiModels;
+
 namespace AiClient.Interfaces;
 
 public interface IProductRagService
@@ -7,7 +9,7 @@ public interface IProductRagService
     /// </summary>
     /// <param name="userQuery">query, ex.: "are there any small tents on sale?"</param>
     /// <param name="cancellationToken"></param>
-    Task<string> RespondAsync(
+    Task<QueryResponse> RespondAsync(
         string userQuery,
         CancellationToken cancellationToken);
 }

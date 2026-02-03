@@ -140,7 +140,7 @@ namespace Database.Migrations
                     Category = table.Column<string>(type: "text", nullable: false),
                     Brand = table.Column<string>(type: "text", nullable: false),
                     GeneratedAtUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Model = table.Column<string>(type: "text", nullable: false),
+                    Deployment = table.Column<string>(type: "text", nullable: false),
                     Embedding = table.Column<Vector>(type: "vector(1536)", nullable: false)
                 },
                 constraints: table =>

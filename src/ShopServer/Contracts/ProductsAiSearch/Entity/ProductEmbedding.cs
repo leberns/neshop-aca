@@ -21,7 +21,7 @@ public record ProductEmbedding
 
     public required DateTime GeneratedAtUtc { get; init; }
 
-    public required string Model { get; init; }
+    public required string Deployment { get; init; }
 
     public required Vector Embedding { get; init; }
 }

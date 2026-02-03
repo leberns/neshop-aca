@@ -1,4 +1,3 @@
-using Contracts.Products.ApiModels;
 using Contracts.Products.Services;
 using Contracts.ProductsAiSearch.ApiModels;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +13,8 @@ public static class ProductSearchEndpoints
         group.MapPost("/", async (
             [FromBody] UserQueryRequest userQueryRequest,
             IProductsAiSearchService productsAiSearchService,
-            CancellationToken cancellationToken) =>
-            {
-                await productsAiSearchService.ProductsChatAsync(userQueryRequest.UserQuery, cancellationToken);
-            })
-            .WithName("SearchProducts")
-            .Produces<IEnumerable<ProductInfo>>();
+            CancellationToken cancellationToken)
+                => await productsAiSearchService.ProductsChatAsync(userQueryRequest.UserQuery, cancellationToken))
+            .WithName("SearchProducts");
     }
 }

@@ -1,5 +1,4 @@
 using Contracts;
-using Pgvector;
 using Contracts.Brands.Entities;
 using Contracts.Carts.Entities;
 using Contracts.Categories.Entities;

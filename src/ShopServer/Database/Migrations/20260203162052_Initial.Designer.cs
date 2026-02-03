@@ -13,7 +13,7 @@ using Pgvector;
 namespace Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260131183041_Initial")]
+    [Migration("20260203162052_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -395,16 +395,16 @@ namespace Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Deployment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Vector>("Embedding")
                         .IsRequired()
                         .HasColumnType("vector(1536)");
 
                     b.Property<DateTime>("GeneratedAtUtc")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");

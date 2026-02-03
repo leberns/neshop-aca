@@ -21,6 +21,9 @@
     <Compile Update="Products\ProductRagService.logger.cs">
       <DependentUpon>ProductSearchService.cs</DependentUpon>
     </Compile>
+    <Compile Update="AzureChat\AzureChatService.logger.cs">
+      <DependentUpon>AzureChatService.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

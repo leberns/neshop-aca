@@ -1,6 +1,7 @@
+using Microsoft.Extensions.Logging;
 using AiClient.Interfaces;
 using Contracts.Products.Services;
-using Microsoft.Extensions.Logging;
+using Contracts.ProductsAiSearch.ApiModels;
 
 namespace Core.Products;
 
@@ -9,7 +10,7 @@ public partial class ProductsAiSearchService(
     IProductRagService productsRagService
     ) : IProductsAiSearchService
 {
-    public async Task<string> ProductsChatAsync(string userQuery, CancellationToken cancellationToken)
+    public async Task<QueryResponse> ProductsChatAsync(string userQuery, CancellationToken cancellationToken)
     {
         LogProductsChat(logger, userQuery);
 

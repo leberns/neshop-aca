@@ -16,7 +16,6 @@ public class ProductRepositoryAiSearch(
         return await dbContext.Products
             .Include(p => p.Brand)
             .Include(p => p.Category)
-            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
@@ -35,10 +34,10 @@ public class ProductRepositoryAiSearch(
         return await dbContext.ProductEmbeddings
             .OrderBy(e => e.Embedding.L2Distance(pgVector))
             .Take(limit)
+            .Include(e => e.Product).ThenInclude(p => p.Brand)
+            .Include(e => e.Product).ThenInclude(p => p.Category)
+            .Include(e => e.Product).ThenInclude(p => p.Images)
             .Select(e => e.Product)
-            .Include(p => p.Brand)
-            .Include(p => p.Category)
-            .Include(p => p.Images)
             .ToListAsync(cancellationToken);
     }
 

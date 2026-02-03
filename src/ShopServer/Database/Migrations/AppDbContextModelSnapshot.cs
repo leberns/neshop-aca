@@ -392,16 +392,16 @@ namespace Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Deployment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Vector>("Embedding")
                         .IsRequired()
                         .HasColumnType("vector(1536)");
 
                     b.Property<DateTime>("GeneratedAtUtc")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");

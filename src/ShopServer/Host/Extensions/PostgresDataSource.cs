@@ -32,6 +32,8 @@ public static class PostgresDataSource
                         ManagedIdentityClientId = options.ManagedIdentityClientId
                     });
 
+                dataSourceBuilder.UseVector();
+
                 dataSourceBuilder.UsePeriodicPasswordProvider(async (_, cancellationToken) =>
                 {
                     var requestContext = new Azure.Core.TokenRequestContext([Constants.Identity.DatabaseTokenScope]);

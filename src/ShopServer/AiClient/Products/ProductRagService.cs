@@ -1,6 +1,7 @@
 using System.Text;
 using AiClient.Interfaces;
 using Contracts.Products.Entities;
+using Contracts.ProductsAiSearch.ApiModels;
 using Contracts.ProductsAiSearch.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -14,10 +15,12 @@ public partial class ProductRagService(
     ILogger<ProductRagService> logger
     ) : IProductRagService
 {
-    public async Task<string> RespondAsync(
+    public async Task<QueryResponse> RespondAsync(
         string userQuery,
         CancellationToken cancellationToken)
     {
+        LogSearchingProductsWithUserQuery(logger, userQuery);
+
         if (!await repositoryAiSearch.AnyProductEmbeddings(cancellationToken))
         {
             await productEmbedder.GenerateEmbeddingsAsync(cancellationToken);
@@ -29,13 +32,15 @@ public partial class ProductRagService(
 
         var relevantProducts = await repositoryAiSearch.SearchSimilarProducts(queryEmbedding, limit, cancellationToken);
 
+        LogFoundRelevantProducts(logger, relevantProducts.Count, string.Join(", ", relevantProducts.Select(p => $"{p.Id} {p.Name}")));
+
         var systemMessage = BuildSystemMessage();
 
         var assistantMessage = BuildAssistantMessage(relevantProducts);
 
         var response = await chatService.RespondAsync(systemMessage, userQuery, assistantMessage, cancellationToken);
 
-        logger.LogInformation("Generated response for userQuery");
+        LogGeneratedResponseForUserQuery(logger, response.Text);
 
         return response;
     }
