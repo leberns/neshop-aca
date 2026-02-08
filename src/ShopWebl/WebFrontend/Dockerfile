@@ -7,8 +7,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["WebFrontend/WebFrontend.csproj", "WebFrontend/"]
 COPY ["ShopClient/ShopClient.csproj", "ShopClient/"]
+COPY ["WebContracts/WebContracts.csproj", "WebContracts/"]
+COPY ["WebCore/WebCore.csproj", "WebCore/"]
+COPY ["WebFrontend/WebFrontend.csproj", "WebFrontend/"]
 RUN dotnet restore "./WebFrontend/WebFrontend.csproj"
 COPY . .
 WORKDIR "/src/WebFrontend"
