@@ -3,3 +3,5 @@
 POSTGRES_USER=posadmin
 POSTGRES_PASSWORD=pospassw0rd
 POSTGRES_DB=neshopdb
+APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://your-azure-app-insights-domain.com"
+AiOptions__Endpoint="https://cog-neshop999.openai.azure.com/"

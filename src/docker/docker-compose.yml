@@ -1,7 +1,7 @@
 services:
   postgres:
     container_name: postgres
-    image: postgres:18.0
+    image: pgvector/pgvector:0.8.1-pg18-trixie
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -12,7 +12,7 @@ services:
     networks:
       - net-lab
     volumes:
-      - postgres:/var/lib/postgresql
+      - postgresql:/var/lib/postgresql
 
   shopserver:
     container_name: shopserver
@@ -48,5 +48,5 @@ networks:
     external: true # this network has been created in another docker compose file
 
 volumes:
-  postgres:
+  postgresql:
     driver: local
