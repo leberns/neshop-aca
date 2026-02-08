@@ -9,6 +9,17 @@ It is possible to deploy the application on Azure from a local machine instead o
 
 It is assumed the code is locally in the `~/Dev/neshop-aca` folder on Linux / MacOS. On Windows just replace `~/Dev` by a path like `D:\Dev`.
 
+## Making sure container images are available
+
+The container images of the application have to be available on Docker Hub before provisioning the application on Azure.
+
+To make sure the images are available, there are two options:
+
+1. Build the container images locally and push them to the container registry DockerHub, verify [How to build and push container images to Docker Hub](07-images-creation-docker-hub.md)
+
+2. Use dummy images for the container apps:
+  * remove the `imageServer` and `imageWeb` from the `main.bicepparam` file so that the default `containerapps-helloworld` image is used.
+
 ## Check / install bicep locally
 
 ```Sh

@@ -11,6 +11,7 @@ COPY ["Host/Host.csproj", "Host/"]
 COPY ["Contracts/Contracts.csproj", "Contracts/"]
 COPY ["Core/Core.csproj", "Core/"]
 COPY ["Database/Database.csproj", "Database/"]
+COPY ["AiClient/AiClient.csproj", "AiClient/"]
 RUN dotnet restore "./Host/Host.csproj"
 COPY . .
 WORKDIR "/src/Host"
