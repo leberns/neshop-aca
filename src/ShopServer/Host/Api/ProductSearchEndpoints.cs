@@ -11,10 +11,11 @@ public static class ProductSearchEndpoints
         var group = routes.MapGroup("/api/Products/Search");
 
         group.MapPost("/", async (
-            [FromBody] UserQueryRequest userQueryRequest,
+            [FromBody] UserSearchRequest userSearchRequest,
             IProductsAiSearchService productsAiSearchService,
             CancellationToken cancellationToken)
-                => await productsAiSearchService.ProductsChatAsync(userQueryRequest.UserQuery, cancellationToken))
-            .WithName("SearchProducts");
+                => await productsAiSearchService.ProductsSearchAsync(userSearchRequest.UserQuery, cancellationToken))
+            .WithName("SearchProducts")
+            .Produces<UserSearchResponse>();
     }
 }

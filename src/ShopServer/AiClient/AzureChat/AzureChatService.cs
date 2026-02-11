@@ -1,7 +1,6 @@
 using AiClient.Interfaces;
 using Azure.AI.OpenAI;
 using Contracts;
-using Contracts.ProductsAiSearch.ApiModels;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 using ChatMessage = OpenAI.Chat.ChatMessage;
@@ -13,7 +12,7 @@ public partial class AzureChatService(
     ILogger<AzureChatService> logger
     ) : IChatService
 {
-    public async Task<QueryResponse> RespondAsync(
+    public async Task<string> RespondAsync(
         string systemMessage,
         string userQuery,
         string assistantMessage,
@@ -40,9 +39,6 @@ public partial class AzureChatService(
 
         LogResponseStats(logger, $"{response.FinishReason}", response.Usage.InputTokenCount, response.Usage.OutputTokenCount);
 
-        return new QueryResponse
-        {
-            Text = response.Content[0].Text
-        };
+        return response.Content[0].Text;
     }
 }

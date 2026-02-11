@@ -1,7 +1,7 @@
 using Contracts.Categories.Entities;
 using Contracts.Brands.Entities;
 using Contracts.Images.Entities;
-using Contracts.ProductsCart.Entity;
+using Contracts.ProductsCart.Entities;
 
 namespace Contracts.Products.Entities;
 

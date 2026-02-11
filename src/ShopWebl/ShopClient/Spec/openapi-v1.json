@@ -116,7 +116,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserQueryRequest"
+                "$ref": "#/components/schemas/UserSearchRequest"
               }
             }
           },
@@ -128,7 +128,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/QueryResponse"
+                  "$ref": "#/components/schemas/UserSearchResponse"
                 }
               }
             }
@@ -178,18 +178,7 @@
           }
         }
       },
-      "QueryResponse": {
-        "required": [
-          "text"
-        ],
-        "type": "object",
-        "properties": {
-          "text": {
-            "type": "string"
-          }
-        }
-      },
-      "UserQueryRequest": {
+      "UserSearchRequest": {
         "required": [
           "userQuery"
         ],
@@ -197,6 +186,24 @@
         "properties": {
           "userQuery": {
             "type": "string"
+          }
+        }
+      },
+      "UserSearchResponse": {
+        "required": [
+          "text",
+          "products"
+        ],
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductInfo"
+            }
           }
         }
       }

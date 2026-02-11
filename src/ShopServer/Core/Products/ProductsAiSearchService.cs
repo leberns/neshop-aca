@@ -4,12 +4,18 @@ using Contracts.ProductsAiSearch.ApiModels;
 
 namespace Core.Products;
 
-public partial class ProductsAiSearchService(
+public class ProductsAiSearchService(
     IProductRagService productsRagService
     ) : IProductsAiSearchService
 {
-    public async Task<QueryResponse> ProductsChatAsync(string userQuery, CancellationToken cancellationToken)
+    public async Task<UserSearchResponse> ProductsSearchAsync(string userQuery, CancellationToken cancellationToken)
     {
-        return await productsRagService.RespondAsync(userQuery, cancellationToken);
+        var ragResponse = await productsRagService.RespondAsync(userQuery, cancellationToken);
+
+        return new UserSearchResponse
+        {
+            Text = ragResponse.Text,
+            Products = ragResponse.Products.Select(p => p.ToProductInfo()).ToList(),
+        };
     }
 }

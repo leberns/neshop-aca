@@ -47,12 +47,12 @@ namespace ShopWeb.ShopClient
 
         /// <returns>OK</returns>
         /// <exception cref="ShopApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<QueryResponse> SearchProductsAsync(UserQueryRequest body);
+        System.Threading.Tasks.Task<UserSearchResponse> SearchProductsAsync(UserSearchRequest body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ShopApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<QueryResponse> SearchProductsAsync(UserQueryRequest body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<UserSearchResponse> SearchProductsAsync(UserSearchRequest body, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -264,7 +264,7 @@ namespace ShopWeb.ShopClient
 
         /// <returns>OK</returns>
         /// <exception cref="ShopApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<QueryResponse> SearchProductsAsync(UserQueryRequest body)
+        public virtual System.Threading.Tasks.Task<UserSearchResponse> SearchProductsAsync(UserSearchRequest body)
         {
             return SearchProductsAsync(body, System.Threading.CancellationToken.None);
         }
@@ -272,7 +272,7 @@ namespace ShopWeb.ShopClient
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ShopApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<QueryResponse> SearchProductsAsync(UserQueryRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UserSearchResponse> SearchProductsAsync(UserSearchRequest body, System.Threading.CancellationToken cancellationToken)
         {
             if (body == null)
                 throw new System.ArgumentNullException("body");
@@ -320,7 +320,7 @@ namespace ShopWeb.ShopClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<QueryResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<UserSearchResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ShopApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -518,12 +518,12 @@ namespace ShopWeb.ShopClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class QueryResponse
+    public partial class UserSearchRequest
     {
 
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("userQuery", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Text { get; set; }
+        public string UserQuery { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -537,12 +537,16 @@ namespace ShopWeb.ShopClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UserQueryRequest
+    public partial class UserSearchResponse
     {
 
-        [Newtonsoft.Json.JsonProperty("userQuery", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string UserQuery { get; set; }
+        public string Text { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("products", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<ProductInfo> Products { get; set; } = new System.Collections.ObjectModel.Collection<ProductInfo>();
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

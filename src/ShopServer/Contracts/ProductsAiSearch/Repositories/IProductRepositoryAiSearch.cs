@@ -1,5 +1,5 @@
 using Contracts.Products.Entities;
-using Contracts.ProductsAiSearch.Entity;
+using Contracts.ProductsAiSearch.Entities;
 
 namespace Contracts.ProductsAiSearch.Repositories;
 

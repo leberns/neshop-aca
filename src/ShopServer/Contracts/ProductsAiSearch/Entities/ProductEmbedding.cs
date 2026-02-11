@@ -1,7 +1,7 @@
-using Pgvector;
 using Contracts.Products.Entities;
+using Pgvector;
 
-namespace Contracts.ProductsAiSearch.Entity;
+namespace Contracts.ProductsAiSearch.Entities;
 
 public record ProductEmbedding
 {

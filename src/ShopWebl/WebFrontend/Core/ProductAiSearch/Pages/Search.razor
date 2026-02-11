@@ -1,0 +1,117 @@
+﻿@page "/search"
+@implements IDisposable
+@using Microsoft.AspNetCore.Components.Web
+@using ShopWeb.ShopClient
+@using WebContracts
+@using WebFrontend.Core.Product.Components
+@attribute [StreamRendering]
+@inject ILogger<Search> Logger
+@inject IProductsSearch ProductsSearch
+
+<PageTitle>Search - NeShop</PageTitle>
+
+<h1>Search</h1>
+
+<div class="mb-4">
+    <div class="input-group">
+        <input type="text"
+               class="form-control"
+               placeholder="Tell what are you looking for..."
+               @bind="_userQuery"
+               @bind:event="oninput"
+               @onkeydown="HandleKeyDown" />
+
+        <button class="btn btn-primary"
+                type="button"
+                @onclick="PerformSearch"
+                disabled="@_isSearching">
+
+            @if (_isSearching)
+            {
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            }
+            Search
+        </button>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(_searchResponse))
+{
+    <div class="alert alert-info mb-4">
+        <h5>Search Response:</h5>
+        <p class="mb-0">@_searchResponse</p>
+    </div>
+}
+
+@if (_products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (_products.Count == 0)
+{
+    <p><em>No products found.</em></p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        @foreach (var product in _products)
+        {
+            <div class="col">
+                <ProductCard Product="product"></ProductCard>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private readonly CancellationTokenSource _cts = new();
+
+    private ICollection<ProductInfo>? _products = [];
+    private string _userQuery = "Which small tent do you recommend?";
+    private string _searchResponse = string.Empty;
+    private bool _isSearching;
+
+    private async Task PerformSearch()
+    {
+        if (string.IsNullOrWhiteSpace(_userQuery))
+        {
+            return;
+        }
+
+        _isSearching = true;
+        _searchResponse = string.Empty;
+        _products = [];
+
+        try
+        {
+            var response = await ProductsSearch.Search(_userQuery, _cts.Token);
+            _searchResponse = response.Text;
+            _products = response.Products;
+
+            _searchResponse = $"Search results for: {_userQuery}";
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error performing search");
+            _searchResponse = "An error occurred while searching.";
+        }
+        finally
+        {
+            _isSearching = false;
+        }
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !_isSearching)
+        {
+            await PerformSearch();
+        }
+    }
+
+    public void Dispose()
+    {
+        _cts.Cancel();
+        _cts.Dispose();
+    }
+}

@@ -4,5 +4,5 @@ namespace AiClient.Interfaces;
 
 public interface IChatService
 {
-    public Task<QueryResponse> RespondAsync(string systemMessage, string userQuery, string assistantMessage, CancellationToken cancellationToken);
+    public Task<string> RespondAsync(string systemMessage, string userQuery, string assistantMessage, CancellationToken cancellationToken);
 }

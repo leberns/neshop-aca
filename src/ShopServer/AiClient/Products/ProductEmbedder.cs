@@ -1,7 +1,7 @@
 using Pgvector;
 using AiClient.Interfaces;
 using Contracts.Products.Entities;
-using Contracts.ProductsAiSearch.Entity;
+using Contracts.ProductsAiSearch.Entities;
 using Contracts.ProductsAiSearch.Repositories;
 
 namespace AiClient.Products;
