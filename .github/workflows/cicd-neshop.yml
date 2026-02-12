@@ -9,6 +9,7 @@ on:
     branches: ["main"]
     paths:
       - ".github/workflows/cicd-neshop.yml"
+      - "src/infra/**"
       - "src/ShopServer/**"
       - "src/ShopWebl/**"
   workflow_dispatch: # to allow starting the workflow manually
