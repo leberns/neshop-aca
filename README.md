@@ -39,3 +39,4 @@ Pick an interest and follow along.
 - [Getting Started - Running locally connected to Azure resources](./docs/03-getting-started-running-locally-to-azure.md)
 - [Generating the REST Client to consume API in the Web project](./docs/04-rest-client-generation-in-web-project.md)
 - [Static Assets - How images were generated with AI](./docs/05-static-assets-generation.md)
+- [How to build and push container images to Docker Hub](./docs/07-images-creation-docker-hub.md)
