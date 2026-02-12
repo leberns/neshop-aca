@@ -81,9 +81,6 @@ param postgresDatabaseName string
 @description('The region to allocate the AI resources, models are normally not available in all regions, verify before trying to deploy in other regions')
 param aiResourceLocation string
 
-@description('Suffix for the Azure cognitive services account name')
-param aiResourceNameSuffix string
-
 var abbrs = loadJsonContent('./utils/abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
 var postgresServerName = '${abbrs.dBforPostgreSQLServers}${resourceToken}'
@@ -153,7 +150,7 @@ module aiResource './app/azure-openai.bicep' = {
   name: 'ai-resource'
   scope: rg
   params: {
-    name: '${abbrs.cognitiveServicesAccounts}${aiResourceNameSuffix}'
+    name: '${abbrs.cognitiveServicesAccounts}${resourceToken}'
     location: aiResourceLocation
     tags: tags
   }
