@@ -1,6 +1,6 @@
 # Provisioning the infrastructure on Azure from a local machine
 
-It is possible to deploy the application on Azure from a local machine instead of the GitHub Actions workflow.
+It is possible to provision the infrastructure on Azure from a local machine instead of the GitHub Actions workflow.
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ It is assumed the code is locally in the `~/Dev/neshop-aca` folder on Linux / Ma
 
 ## Making sure container images are available
 
-Before provisioning the application on Azure, the container images of the application must be available on the Docker Hub container registry.
+Before provisioning the infrastructure on Azure, the container images of the application must be available on the Docker Hub container registry.
 
 To make sure the images are available, there are two options:
 

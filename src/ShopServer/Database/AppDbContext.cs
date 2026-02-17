@@ -49,6 +49,8 @@ public sealed class AppDbContext(
         {
             builder.HasIndex(b => b.Name);
             builder.HasIndex(b => b.Price);
+            builder.Property(p => p.CreatedOn).HasDefaultValueSql("NOW()");
+            builder.Property(p => p.UpdatedOn).HasDefaultValueSql("NOW()").ValueGeneratedOnUpdate();
         });
 
         modelBuilder.Entity<ProductEmbedding>(builder =>

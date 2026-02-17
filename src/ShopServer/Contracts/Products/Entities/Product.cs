@@ -7,21 +7,23 @@ namespace Contracts.Products.Entities;
 
 public record Product
 {
-    public int Id { get; set; }
+    public required int Id { get; set; }
 
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
-    public string Description { get; set; } = string.Empty;
+    public required string Description { get; set; } = string.Empty;
 
-    public decimal Price { get; set; } = 0;
+    public required decimal Price { get; set; }
 
-    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset? CreatedOn { get; init; }
 
-    public int BrandId { get; set; }
+    public DateTimeOffset? UpdatedOn { get; init; }
+
+    public required int BrandId { get; set; }
 
     public Brand Brand { get; set; } = null!;
 
-    public int CategoryId { get; set; } = 0;
+    public required int CategoryId { get; set; }
 
     public Category Category { get; set; } = null!;
 

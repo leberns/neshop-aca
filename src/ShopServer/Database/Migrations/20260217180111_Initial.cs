@@ -67,7 +67,8 @@ namespace Database.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true, defaultValueSql: "NOW()"),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true, defaultValueSql: "NOW()"),
                     BrandId = table.Column<int>(type: "integer", nullable: false),
                     CategoryId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -250,17 +251,17 @@ namespace Database.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "BrandId", "CategoryId", "CreatedOn", "Description", "Name", "Price" },
+                columns: new[] { "Id", "BrandId", "CategoryId", "Description", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Fictional ultralight tent for high-altitude camping.", "Aura 2 Ultralight", 315.00m },
-                    { 2, 2, 1, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "A 2-person heavy-duty basecamp tent built for extreme conditions.", "Citadel Fortress 2", 285.99m },
-                    { 3, 2, 1, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "A heavy-duty basecamp tent built for extreme conditions.", "Citadel Fortress 4", 485.99m },
-                    { 4, 1, 2, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Synthetic mesh trail runners for rapid elevation gain.", "Vanguard Low-Pro", 145.00m },
-                    { 5, 2, 2, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Reinforced leather boots for technical rocky scrambles.", "Titan-Claw Boots", 189.50m },
-                    { 6, 2, 3, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Expedition-grade pack with modular external storage.", "Atlas Hauler 75L", 265.00m },
-                    { 7, 2, 3, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Minimalist hydration pack for peak bagging.", "Swift-Pulse 15", 75.00m },
-                    { 8, 3, 3, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Roll-top waterproof backpack for the modern explorer.", "Nomad Versa-Pack", 99.00m }
+                    { 1, 1, 1, "Fictional ultralight tent for high-altitude camping.", "Aura 2 Ultralight", 315.00m },
+                    { 2, 2, 1, "A 2-person heavy-duty basecamp tent built for extreme conditions.", "Citadel Fortress 2", 285.99m },
+                    { 3, 2, 1, "A heavy-duty basecamp tent built for extreme conditions.", "Citadel Fortress 4", 485.99m },
+                    { 4, 1, 2, "Synthetic mesh trail runners for rapid elevation gain.", "Vanguard Low-Pro", 145.00m },
+                    { 5, 2, 2, "Reinforced leather boots for technical rocky scrambles.", "Titan-Claw Boots", 189.50m },
+                    { 6, 2, 3, "Expedition-grade pack with modular external storage.", "Atlas Hauler 75L", 265.00m },
+                    { 7, 2, 3, "Minimalist hydration pack for peak bagging.", "Swift-Pulse 15", 75.00m },
+                    { 8, 3, 3, "Roll-top waterproof backpack for the modern explorer.", "Nomad Versa-Pack", 99.00m }
                 });
 
             migrationBuilder.InsertData(

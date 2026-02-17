@@ -4,9 +4,9 @@ using Contracts.Products.Entities;
 
 namespace Core.Tests.TestData;
 
-public static class ProductsTestData
+public static class Products
 {
-    public static Product CreateTestProduct(int id, string name, decimal price)
+    public static Product MakeProduct(int id, string name, decimal price)
     {
         return new Product
         {
@@ -14,6 +14,8 @@ public static class ProductsTestData
             Name = name,
             Description = "Test Description",
             Price = price,
+            CreatedOn = new DateTime(2026, 1, 12),
+            UpdatedOn = new DateTime(2026, 1, 12),
             BrandId = 1,
             CategoryId = 1,
             Brand = new Brand { Id = 1, Name = "Test Brand" },

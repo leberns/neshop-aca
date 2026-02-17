@@ -263,8 +263,10 @@ namespace Database.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -276,6 +278,11 @@ namespace Database.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.HasKey("Id");
 
@@ -295,7 +302,6 @@ namespace Database.Migrations
                             Id = 1,
                             BrandId = 1,
                             CategoryId = 1,
-                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Fictional ultralight tent for high-altitude camping.",
                             Name = "Aura 2 Ultralight",
                             Price = 315.00m
@@ -305,7 +311,6 @@ namespace Database.Migrations
                             Id = 2,
                             BrandId = 2,
                             CategoryId = 1,
-                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "A 2-person heavy-duty basecamp tent built for extreme conditions.",
                             Name = "Citadel Fortress 2",
                             Price = 285.99m
@@ -315,7 +320,6 @@ namespace Database.Migrations
                             Id = 3,
                             BrandId = 2,
                             CategoryId = 1,
-                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "A heavy-duty basecamp tent built for extreme conditions.",
                             Name = "Citadel Fortress 4",
                             Price = 485.99m
@@ -325,7 +329,6 @@ namespace Database.Migrations
                             Id = 4,
                             BrandId = 1,
                             CategoryId = 2,
-                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Synthetic mesh trail runners for rapid elevation gain.",
                             Name = "Vanguard Low-Pro",
                             Price = 145.00m
@@ -335,7 +338,6 @@ namespace Database.Migrations
                             Id = 5,
                             BrandId = 2,
                             CategoryId = 2,
-                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Reinforced leather boots for technical rocky scrambles.",
                             Name = "Titan-Claw Boots",
                             Price = 189.50m
@@ -345,7 +347,6 @@ namespace Database.Migrations
                             Id = 6,
                             BrandId = 2,
                             CategoryId = 3,
-                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Expedition-grade pack with modular external storage.",
                             Name = "Atlas Hauler 75L",
                             Price = 265.00m
@@ -355,7 +356,6 @@ namespace Database.Migrations
                             Id = 7,
                             BrandId = 2,
                             CategoryId = 3,
-                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Minimalist hydration pack for peak bagging.",
                             Name = "Swift-Pulse 15",
                             Price = 75.00m
@@ -365,14 +365,13 @@ namespace Database.Migrations
                             Id = 8,
                             BrandId = 3,
                             CategoryId = 3,
-                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Roll-top waterproof backpack for the modern explorer.",
                             Name = "Nomad Versa-Pack",
                             Price = 99.00m
                         });
                 });
 
-            modelBuilder.Entity("Contracts.ProductsAiSearch.Entity.ProductEmbedding", b =>
+            modelBuilder.Entity("Contracts.ProductsAiSearch.Entities.ProductEmbedding", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -416,7 +415,7 @@ namespace Database.Migrations
                     b.ToTable("ProductEmbeddings");
                 });
 
-            modelBuilder.Entity("Contracts.ProductsCart.Entity.ProductCart", b =>
+            modelBuilder.Entity("Contracts.ProductsCart.Entities.ProductCart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -581,7 +580,7 @@ namespace Database.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Contracts.ProductsAiSearch.Entity.ProductEmbedding", b =>
+            modelBuilder.Entity("Contracts.ProductsAiSearch.Entities.ProductEmbedding", b =>
                 {
                     b.HasOne("Contracts.Products.Entities.Product", "Product")
                         .WithMany()
@@ -592,7 +591,7 @@ namespace Database.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Contracts.ProductsCart.Entity.ProductCart", b =>
+            modelBuilder.Entity("Contracts.ProductsCart.Entities.ProductCart", b =>
                 {
                     b.HasOne("Contracts.Carts.Entities.Cart", "Cart")
                         .WithMany("ProductCarts")
