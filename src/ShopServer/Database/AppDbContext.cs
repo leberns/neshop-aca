@@ -49,12 +49,19 @@ public sealed class AppDbContext(
         {
             builder.HasIndex(b => b.Name);
             builder.HasIndex(b => b.Price);
-            builder.Property(p => p.CreatedOn).HasDefaultValueSql("NOW()");
-            builder.Property(p => p.UpdatedOn).HasDefaultValueSql("NOW()").ValueGeneratedOnUpdate();
+            builder.Property(p => p.CreatedOn)
+                .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+
+            builder.Property(p => p.UpdatedOn)
+                .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
+                .ValueGeneratedOnUpdate();
         });
 
         modelBuilder.Entity<ProductEmbedding>(builder =>
         {
+            builder.Property(p => p.GeneratedOn)
+                .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+
             builder.Property(e => e.Embedding)
                 .HasColumnType(Constants.AiAzureEmbedding.DbType);
         });

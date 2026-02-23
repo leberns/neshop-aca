@@ -19,7 +19,7 @@ public record ProductEmbedding
 
     public required string Brand { get; init; }
 
-    public required DateTime GeneratedAtUtc { get; init; }
+    public required DateTime GeneratedOn { get; init; }
 
     public required string Deployment { get; init; }
 

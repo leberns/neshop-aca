@@ -41,7 +41,7 @@ public partial class ProductEmbedder(
                 Brand = product.Brand.Name,
                 Content = content,
                 Embedding = new Vector(embedding),
-                GeneratedAtUtc = DateTime.UtcNow,
+                GeneratedOn = DateTime.UtcNow,
                 Deployment = Contracts.Constants.AiAzureEmbedding.DeploymentName,
             };
 
@@ -56,7 +56,7 @@ public partial class ProductEmbedder(
                 Brand = product.Brand.Name,
                 Content = content,
                 Embedding = new Vector(embedding),
-                GeneratedAtUtc = DateTime.UtcNow,
+                GeneratedOn = DateTime.UtcNow,
                 Deployment = Contracts.Constants.AiAzureEmbedding.DeploymentName
             };
 
