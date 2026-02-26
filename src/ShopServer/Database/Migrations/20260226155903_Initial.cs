@@ -67,8 +67,8 @@ namespace Database.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true, defaultValueSql: "NOW()"),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true, defaultValueSql: "NOW()"),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    UpdatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
                     BrandId = table.Column<int>(type: "integer", nullable: false),
                     CategoryId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -140,7 +140,7 @@ namespace Database.Migrations
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Category = table.Column<string>(type: "text", nullable: false),
                     Brand = table.Column<string>(type: "text", nullable: false),
-                    GeneratedAtUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    GeneratedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
                     Deployment = table.Column<string>(type: "text", nullable: false),
                     Embedding = table.Column<Vector>(type: "vector(1536)", nullable: false)
                 },

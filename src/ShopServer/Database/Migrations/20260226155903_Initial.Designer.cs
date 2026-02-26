@@ -13,7 +13,7 @@ using Pgvector;
 namespace Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260217180111_Initial")]
+    [Migration("20260226155903_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -269,7 +269,7 @@ namespace Database.Migrations
                     b.Property<DateTimeOffset?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()");
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -285,7 +285,7 @@ namespace Database.Migrations
                     b.Property<DateTimeOffset?>("UpdatedOn")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()");
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.HasKey("Id");
 
@@ -402,8 +402,10 @@ namespace Database.Migrations
                         .IsRequired()
                         .HasColumnType("vector(1536)");
 
-                    b.Property<DateTime>("GeneratedAtUtc")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("GeneratedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");

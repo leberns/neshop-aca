@@ -9,7 +9,7 @@ public record ProductEmbedding
 
     public required int ProductId { get; init; }
 
-    public required Product Product { get; init; }
+    public Product Product { get; init; } = null!;
 
     public required string Content { get; init; }
 

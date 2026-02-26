@@ -9,7 +9,6 @@ public static class AddSeedersExtensions
         services.AddTransient<ISeeder, BrandSeeder>();
         services.AddTransient<ISeeder, CategorySeeder>();
         services.AddTransient<ISeeder, ProductSeeder>();
-        services.AddTransient<ISeeder, ProductEmbeddingSeeder>();
         services.AddTransient<ISeeder, ImageSeeder>();
         services.AddTransient<ISeeder, CustomerSeeder>();
         services.AddTransient<ISeeder, CartSeeder>();
