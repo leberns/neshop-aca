@@ -147,7 +147,7 @@ module monitoring 'br/public:avm/res/insights/component:0.7.1' = {
 }
 
 module aiResource './app/azure-openai.bicep' = {
-  name: 'ai-resource'
+  name: 'ai-resource-main-${resourceToken}'
   scope: rg
   params: {
     name: '${abbrs.cognitiveServicesAccounts}${resourceToken}'
