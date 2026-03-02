@@ -1,7 +1,7 @@
-using Pgvector;
 using Contracts.Products.Entities;
+using Pgvector;
 
-namespace Contracts.ProductsAiSearch.Entity;
+namespace Contracts.ProductsAiSearch.Entities;
 
 public record ProductEmbedding
 {
@@ -9,7 +9,7 @@ public record ProductEmbedding
 
     public required int ProductId { get; init; }
 
-    public required Product Product { get; init; }
+    public Product Product { get; init; } = null!;
 
     public required string Content { get; init; }
 
@@ -19,7 +19,7 @@ public record ProductEmbedding
 
     public required string Brand { get; init; }
 
-    public required DateTime GeneratedAtUtc { get; init; }
+    public required DateTime GeneratedOn { get; init; }
 
     public required string Deployment { get; init; }
 

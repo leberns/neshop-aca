@@ -1,4 +1,4 @@
-using Contracts.ProductsCart.Entity;
+using Contracts.ProductsCart.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database.DataSeed;

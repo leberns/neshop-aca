@@ -5,8 +5,8 @@ using Contracts.Categories.Entities;
 using Contracts.Customers.Entities;
 using Contracts.Images.Entities;
 using Contracts.Products.Entities;
-using Contracts.ProductsAiSearch.Entity;
-using Contracts.ProductsCart.Entity;
+using Contracts.ProductsAiSearch.Entities;
+using Contracts.ProductsCart.Entities;
 using Contracts.Reviews.Entities;
 using Database.DataSeed;
 using Microsoft.EntityFrameworkCore;
@@ -49,10 +49,19 @@ public sealed class AppDbContext(
         {
             builder.HasIndex(b => b.Name);
             builder.HasIndex(b => b.Price);
+            builder.Property(p => p.CreatedOn)
+                .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+
+            builder.Property(p => p.UpdatedOn)
+                .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'")
+                .ValueGeneratedOnUpdate();
         });
 
         modelBuilder.Entity<ProductEmbedding>(builder =>
         {
+            builder.Property(p => p.GeneratedOn)
+                .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+
             builder.Property(e => e.Embedding)
                 .HasColumnType(Constants.AiAzureEmbedding.DbType);
         });

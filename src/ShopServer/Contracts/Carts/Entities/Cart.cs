@@ -1,6 +1,6 @@
 using Contracts.Carts.Entities.Enums;
 using Contracts.Customers.Entities;
-using Contracts.ProductsCart.Entity;
+using Contracts.ProductsCart.Entities;
 
 namespace Contracts.Carts.Entities;
 

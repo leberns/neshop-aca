@@ -1,7 +1,6 @@
 using System.Text;
 using AiClient.Interfaces;
-using Contracts.Products.Entities;
-using Contracts.ProductsAiSearch.ApiModels;
+using Contracts.ProductsAiSearch.Models;
 using Contracts.ProductsAiSearch.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -15,7 +14,7 @@ public partial class ProductRagService(
     ILogger<ProductRagService> logger
     ) : IProductRagService
 {
-    public async Task<QueryResponse> RespondAsync(
+    public async Task<RagResponse> RespondAsync(
         string userQuery,
         CancellationToken cancellationToken)
     {
@@ -32,13 +31,19 @@ public partial class ProductRagService(
 
         var relevantProducts = await repositoryAiSearch.SearchSimilarProducts(queryEmbedding, limit, cancellationToken);
 
-        LogFoundRelevantProducts(logger, relevantProducts.Count, string.Join(", ", relevantProducts.Select(p => $"{p.Id} {p.Name}")));
+        LogFoundRelevantProducts(logger, relevantProducts.Count, string.Join(", ", relevantProducts.Select(p => $"{p.Product.Id} {p.Product.Name}  {p.Similarity}")));
 
         var systemMessage = BuildSystemMessage();
 
         var assistantMessage = BuildAssistantMessage(relevantProducts);
 
-        var response = await chatService.RespondAsync(systemMessage, userQuery, assistantMessage, cancellationToken);
+        var responseText = await chatService.RespondAsync(systemMessage, userQuery, assistantMessage, cancellationToken);
+
+        var response = new RagResponse
+        {
+            Text = responseText,
+            Products = relevantProducts.Count > 0 ? [relevantProducts[0].Product] : []
+        };
 
         LogGeneratedResponseForUserQuery(logger, response.Text);
 
@@ -56,8 +61,7 @@ public partial class ProductRagService(
                """;
     }
 
-    private static string BuildAssistantMessage(
-        List<Product> relevantProducts)
+    private static string BuildAssistantMessage(List<ProductAiSearchResult> relevantProducts)
     {
         var assistantMessage = new StringBuilder();
 
@@ -69,9 +73,9 @@ public partial class ProductRagService(
 
         assistantMessage.AppendLine("Provided products:");
 
-        foreach (var product in relevantProducts)
+        foreach (var result in relevantProducts)
         {
-            assistantMessage.Append(product.ToAssistantContent());
+            assistantMessage.Append(result.Product.ToAssistantContent());
             assistantMessage.AppendLine();
         }
 

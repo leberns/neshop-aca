@@ -1,5 +1,6 @@
 using Contracts.Products.Entities;
-using Contracts.ProductsAiSearch.Entity;
+using Contracts.ProductsAiSearch.Entities;
+using Contracts.ProductsAiSearch.Models;
 using Contracts.ProductsAiSearch.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Pgvector;
@@ -24,21 +25,31 @@ public class ProductRepositoryAiSearch(
         return await dbContext.ProductEmbeddings.AnyAsync(cancellationToken);
     }
 
-    public async Task<List<Product>> SearchSimilarProducts(
+    public async Task<List<ProductAiSearchResult>> SearchSimilarProducts(
         float[] vector,
         int limit,
         CancellationToken cancellationToken)
     {
         var pgVector = new Vector(vector);
 
-        return await dbContext.ProductEmbeddings
-            .OrderBy(e => e.Embedding.L2Distance(pgVector))
+        var results = await dbContext.ProductEmbeddings
+            .Include(e => e.Product)
+            .ThenInclude(p => p.Brand)
+            .Include(e => e.Product)
+            .ThenInclude(p => p.Category)
+            .Include(e => e.Product)
+            .ThenInclude(p => p.Images)
+            .Select(e => new
+            {
+                ProductEmbedding = e,
+                Similarity = 1 - e.Embedding.CosineDistance(pgVector)
+            })
+            .OrderByDescending(e => e.Similarity)
             .Take(limit)
-            .Include(e => e.Product).ThenInclude(p => p.Brand)
-            .Include(e => e.Product).ThenInclude(p => p.Category)
-            .Include(e => e.Product).ThenInclude(p => p.Images)
-            .Select(e => e.Product)
+            .Select(e => new ProductAiSearchResult(e.ProductEmbedding.Product, e.Similarity))
             .ToListAsync(cancellationToken);
+
+        return results;
     }
 
     public async Task<ProductEmbedding?> FindProductEmbeddingById(int productId, CancellationToken cancellationToken)

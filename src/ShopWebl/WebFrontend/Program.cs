@@ -29,7 +29,8 @@ builder.Services.AddHttpClient<IShopClient, ShopClient>((sp, client) =>
 });
 
 builder.Services
-    .AddScoped<IProductsService, ProductsService>();
+    .AddScoped<IProductsService, ProductsService>()
+    .AddScoped<IProductsSearch, ProductsSearch>();
 
 var app = builder.Build();
 

@@ -21,6 +21,8 @@ public class ProductSeeder : ISeeder
                 BrandId = 1,
                 CategoryId = 1,
                 Price = 315.00m,
+                CreatedOn = null,
+                UpdatedOn = null,
                 Description = "Fictional ultralight tent for high-altitude camping."
             },
             new Product
@@ -30,6 +32,8 @@ public class ProductSeeder : ISeeder
                 BrandId = 2,
                 CategoryId = 1,
                 Price = 285.99m,
+                CreatedOn = null,
+                UpdatedOn = null,
                 Description = "A 2-person heavy-duty basecamp tent built for extreme conditions."
             },
             new Product
@@ -39,6 +43,8 @@ public class ProductSeeder : ISeeder
                 BrandId = 2,
                 CategoryId = 1,
                 Price = 485.99m,
+                CreatedOn = null,
+                UpdatedOn = null,
                 Description = "A heavy-duty basecamp tent built for extreme conditions."
             },
             new Product
@@ -48,6 +54,8 @@ public class ProductSeeder : ISeeder
                 BrandId = 1,
                 CategoryId = 2,
                 Price = 145.00m,
+                CreatedOn = null,
+                UpdatedOn = null,
                 Description = "Synthetic mesh trail runners for rapid elevation gain."
             },
             new Product
@@ -57,6 +65,8 @@ public class ProductSeeder : ISeeder
                 BrandId = 2,
                 CategoryId = 2,
                 Price = 189.50m,
+                CreatedOn = null,
+                UpdatedOn = null,
                 Description = "Reinforced leather boots for technical rocky scrambles."
             },
             new Product
@@ -66,6 +76,8 @@ public class ProductSeeder : ISeeder
                 BrandId = 2,
                 CategoryId = 3,
                 Price = 265.00m,
+                CreatedOn = null,
+                UpdatedOn = null,
                 Description = "Expedition-grade pack with modular external storage."
             },
             new Product
@@ -75,6 +87,8 @@ public class ProductSeeder : ISeeder
                 BrandId = 2,
                 CategoryId = 3,
                 Price = 75.00m,
+                CreatedOn = null,
+                UpdatedOn = null,
                 Description = "Minimalist hydration pack for peak bagging."
             },
             new Product
@@ -84,6 +98,8 @@ public class ProductSeeder : ISeeder
                 BrandId = 3,
                 CategoryId = 3,
                 Price = 99.00m,
+                CreatedOn = null,
+                UpdatedOn = null,
                 Description = "Roll-top waterproof backpack for the modern explorer."
             }
         ];

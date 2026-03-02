@@ -1,6 +1,6 @@
 using Contracts.Products.Entities;
 
-namespace Contracts.ProductsCart.Entity;
+namespace Contracts.ProductsCart.Entities;
 
 public record ProductCart
 {

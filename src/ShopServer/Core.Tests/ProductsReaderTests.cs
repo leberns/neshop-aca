@@ -1,6 +1,4 @@
-﻿using Contracts.Brands.Entities;
-using Contracts.Categories.Entities;
-using Contracts.Products.Entities;
+﻿using Contracts.Products.Entities;
 using Contracts.Products.Filters;
 using Contracts.Products.Repositories;
 using Core.Products;
@@ -27,8 +25,8 @@ public class ProductsReaderTests
         var filter = new ProductsFilter { FromPrice = 100 };
         var products = new List<Product>
         {
-            TestData.ProductsTestData.CreateTestProduct(1, "Product 1", 100),
-            TestData.ProductsTestData.CreateTestProduct(2, "Product 2", 200)
+            TestData.Products.MakeProduct(1, "Product 1", 100),
+            TestData.Products.MakeProduct(2, "Product 2", 200)
         };
 
         _repositoryMock
@@ -59,7 +57,7 @@ public class ProductsReaderTests
     [Fact]
     public async Task GetProductById_ExistingProduct_ReturnsProductInfo()
     {
-        var product = TestData.ProductsTestData.CreateTestProduct(1, "Test Product", 150);
+        var product = TestData.Products.MakeProduct(1, "Test Product", 150);
 
         _repositoryMock
             .Setup(r => r.GetProductById(1, It.IsAny<CancellationToken>()))
