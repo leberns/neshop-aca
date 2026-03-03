@@ -60,3 +60,23 @@ The multi-arch images are for:
 - `linux/arm64`: optional, local development environment (update it according to your local development environment)
 
 Use `  --platform linux/amd64,linux/arm64 \`to build the multi-arch images, if you like to do so.
+
+## Updating the container apps on Azure
+
+If the container apps have already been deployed to Azure at least once, it is possible to update them. 
+
+```Sh
+# update the server container app on Azure
+az containerapp update \
+  --name ca-neshop-server \
+  --resource-group rg-dev-neshop-aca \
+  --image leberns/neshop:server-latest
+```
+
+```Sh
+# update the frontend container app on Azure
+az containerapp update \
+  --name ca-neshop-webl \
+  --resource-group rg-dev-neshop-aca \
+  --image leberns/neshop:webl-latest
+```

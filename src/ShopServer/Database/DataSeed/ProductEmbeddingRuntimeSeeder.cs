@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Contracts.ProductsAiSearch.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Pgvector;
 
 namespace Database.DataSeed;
@@ -11,7 +12,9 @@ namespace Database.DataSeed;
 /// </summary>
 public static class ProductEmbeddingRuntimeSeeder
 {
-    public static async Task SeedProductEmbeddingsAsync(this AppDbContext context)
+    public static async Task SeedProductEmbeddingsAsync(
+        this AppDbContext context,
+        ILogger logger)
     {
         if (await context.ProductEmbeddings.AnyAsync())
         {
@@ -19,11 +22,12 @@ public static class ProductEmbeddingRuntimeSeeder
         }
 
         var basePath = Directory.GetCurrentDirectory();
-        var path = Path.Combine(basePath, "..", "Database", "Migrations", "ProductEmbeddings.json");
+        var path = Path.Combine(basePath, "Database", "Migrations", "ProductEmbeddings.json");
 
         if (!File.Exists(path))
         {
-            throw new FileNotFoundException($"Product embedding seed file not found: {path}");
+            logger.LogError("Product embedding seed file not found: {Path}", path);
+            return;
         }
 
         var contentJson = await File.ReadAllTextAsync(path);
