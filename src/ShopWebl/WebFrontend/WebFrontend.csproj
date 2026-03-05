@@ -19,4 +19,25 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Core\Price\Components\PriceViewer.razor" />
+    <_ContentIncludedByDefault Remove="Core\Product\Components\ProductCard.razor" />
+    <_ContentIncludedByDefault Remove="Core\Product\Components\ProductDetails.razor" />
+    <_ContentIncludedByDefault Remove="Core\Product\Pages\Product.razor" />
+    <_ContentIncludedByDefault Remove="Core\Product\Pages\Products.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Components\Pages\Price\Components\PriceViewer.razor" />
+    <AdditionalFiles Include="Components\Pages\ProductAiSearch\Pages\Search.razor" />
+    <AdditionalFiles Include="Components\Pages\Product\Components\ProductCard.razor" />
+    <AdditionalFiles Include="Components\Pages\Product\Components\ProductDetails.razor" />
+    <AdditionalFiles Include="Components\Pages\Product\Pages\Product.razor" />
+    <AdditionalFiles Include="Components\Pages\Product\Pages\Products.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+
 </Project>
