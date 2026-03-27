@@ -1,4 +1,5 @@
 @ShopServer_HostAddress = https://localhost:5051
+#@ShopServer_HostAddress = https://ca-neshop-server.politecoast-2e9b9b43.westeurope.azurecontainerapps.io
 
 POST {{ShopServer_HostAddress}}/api/products/search
 Content-Type: application/json
