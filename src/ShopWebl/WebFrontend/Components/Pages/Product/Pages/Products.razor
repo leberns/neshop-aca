@@ -1,10 +1,9 @@
 ﻿@page "/products"
 @implements IDisposable
 @using System.Globalization
-@using Microsoft.AspNetCore.Components.Web
 @using ShopWeb.ShopClient
 @using WebContracts
-@using WebFrontend.Core.Product.Components
+@using WebFrontend.Components.Pages.Product.Components
 @attribute [StreamRendering]
 @inject ILogger<Products> Logger
 @inject IProductsService ProductsService

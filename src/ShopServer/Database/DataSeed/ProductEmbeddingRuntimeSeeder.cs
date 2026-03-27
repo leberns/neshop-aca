@@ -16,13 +16,16 @@ public static class ProductEmbeddingRuntimeSeeder
         this AppDbContext context,
         ILogger logger)
     {
+        logger.LogInformation("Checking for product embeddings seeding");
+
         if (await context.ProductEmbeddings.AnyAsync())
         {
+            logger.LogInformation("Product embeddings already seeded");
             return;
         }
 
-        var basePath = Directory.GetCurrentDirectory();
-        var path = Path.Combine(basePath, "Database", "Migrations", "ProductEmbeddings.json");
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;
+        var path = Path.Combine(basePath, "DataSeed", "ProductEmbeddings.json");
 
         if (!File.Exists(path))
         {
@@ -32,15 +35,21 @@ public static class ProductEmbeddingRuntimeSeeder
 
         var contentJson = await File.ReadAllTextAsync(path);
 
+        logger.LogInformation("Product embeddings size: {ContentJsonLength}", contentJson.Length);
+
         var options = new JsonSerializerOptions();
         options.Converters.Add(new VectorJsonConverter());
         var embeddings = JsonSerializer.Deserialize<ProductEmbedding[]>(contentJson, options);
 
         if (embeddings is not null && embeddings.Length > 0)
         {
+            logger.LogInformation("Found {EmbeddingsLength} product embeddings", embeddings.Length);
+
             await context.ProductEmbeddings.AddRangeAsync(embeddings);
             await context.SaveChangesAsync();
         }
+
+        logger.LogInformation("Finished seeding product embeddings");
     }
 
     private class VectorJsonConverter : JsonConverter<Vector>

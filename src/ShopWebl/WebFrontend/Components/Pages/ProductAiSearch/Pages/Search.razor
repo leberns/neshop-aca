@@ -1,10 +1,9 @@
 ﻿@page "/search"
 @implements IDisposable
-@using Microsoft.AspNetCore.Components.Web
 @using ShopWeb.ShopClient
 @using WebContracts
-@using WebFrontend.Core.Product.Components
-@attribute [StreamRendering]
+@using WebFrontend.Components.Pages.Product.Components
+@rendermode InteractiveServer
 @inject ILogger<Search> Logger
 @inject IProductsSearch ProductsSearch
 
@@ -37,8 +36,7 @@
 
 @if (!string.IsNullOrEmpty(_searchResponse))
 {
-    <div class="alert alert-info mb-4">
-        <h5>Search Response:</h5>
+    <div>
         <p class="mb-0">@_searchResponse</p>
     </div>
 }
@@ -47,13 +45,13 @@
 {
     <p><em>Loading...</em></p>
 }
-else if (_products.Count == 0)
+else if (!string.IsNullOrEmpty(_searchResponse) && _products.Count == 0)
 {
     <p><em>No products found.</em></p>
 }
 else
 {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 p-3">
         @foreach (var product in _products)
         {
             <div class="col">

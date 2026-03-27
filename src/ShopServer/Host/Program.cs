@@ -41,10 +41,13 @@ builder.Services
 
 var app = builder.Build();
 
+var appLogger = app.Services.GetRequiredService<ILogger<Program>>();
+appLogger.LogInformation("Starting NeShop server application");
+
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await context.SeedProductEmbeddingsAsync(logger);
+    await context.SeedProductEmbeddingsAsync(appLogger);
 }
 
 if (app.Environment.IsDevelopment())

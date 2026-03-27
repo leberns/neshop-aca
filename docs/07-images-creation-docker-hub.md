@@ -52,14 +52,12 @@ docker buildx build \
 
 The container images are available on your repository in Docker Hub: https://hub.docker.com/
 
-## Multi-arch images
+### Multi-arch images
 
-The multi-arch images are for:
+- `linux/amd64`: for Azure container app architecture
+- `linux/arm64`: optional, for local development environment (update it according to your local development environment)
 
-- `linux/amd64`: Azure container app architecture
-- `linux/arm64`: optional, local development environment (update it according to your local development environment)
-
-Use `  --platform linux/amd64,linux/arm64 \`to build the multi-arch images, if you like to do so.
+Usege: `  --platform linux/amd64,linux/arm64 \` to build the multi-arch images, if you like to do so.
 
 ## Updating the container apps on Azure
 
@@ -71,6 +69,21 @@ az containerapp update \
   --name ca-neshop-server \
   --resource-group rg-dev-neshop-aca \
   --image leberns/neshop:server-latest
+```
+
+```Sh
+# check container status
+az containerapp revision list --name ca-neshop-server --resource-group rg-dev-neshop-aca  --output table
+```
+
+```Sh
+# stop container revision
+az containerapp revision deactivate --name ca-neshop-server --resource-group rg-dev-neshop-aca --revision ca-neshop-server--gi1562l
+```
+
+```Sh
+# stop container revision
+az containerapp revision activate --name ca-neshop-server --resource-group rg-dev-neshop-aca --revision ca-neshop-server--gi1562l
 ```
 
 ```Sh
